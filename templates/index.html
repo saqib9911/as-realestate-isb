@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A&S RealEstate Isb</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #ffdf00; --bg: #ffffff; --text: #050a14; --card: #f8f9fa;
+            --wa-green: #25D366; --call-blue: #007bff; --nav: #020b1a;
+        }
+        [data-theme="dark"] {
+            --bg: #050a14; --text: #ffffff; --card: #111d2e; --nav: #010813;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: 0.3s; }
+        body { margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; color: var(--text); overflow-x: hidden; }
+
+        /* Disney Style Splash */
+        #splash { position: fixed; inset: 0; background: radial-gradient(circle at center, #102a4d 0%, #000 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: 0.8s; }
+        .disney-text { font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--gold); text-shadow: 0 0 20px var(--gold); animation: float 2.5s ease-out; }
+        .dev-credit { color: white; opacity: 0.6; font-size: 11px; letter-spacing: 3px; margin-top: 15px; text-transform: uppercase; }
+
+        /* Navigation */
+        nav { background: var(--nav); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid var(--gold); }
+        .nav-logo { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1rem; cursor: pointer; }
+
+        /* Hamburger Menu */
+        .hamburger { width: 30px; height: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .hamburger span { width: 100%; height: 3px; background: var(--gold); border-radius: 5px; }
+
+        /* Sidebar */
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: var(--nav); transition: 0.4s; z-index: 2000; padding-top: 60px; border-right: 2px solid var(--gold); }
+        .sidebar.active { left: 0; }
+        .sidebar a { padding: 15px 25px; text-decoration: none; color: #ccd6f6; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sidebar a i { margin-right: 15px; color: var(--gold); width: 20px; text-align: center; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; z-index: 1500; }
+
+        /* Tabs & Filtering */
+        .filter-tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; overflow-x: auto; padding-bottom: 5px; }
+        .tab { padding: 8px 20px; border-radius: 20px; border: 1px solid var(--gold); color: var(--text); cursor: pointer; font-size: 13px; font-weight: 600; white-space: nowrap; }
+        .tab.active { background: var(--gold); color: #000; }
+
+        /* Property Cards */
+        .container { padding: 10px 20px; max-width: 1200px; margin: auto; min-height: 80vh; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid rgba(128,128,128,0.1); position: relative; }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .price { color: var(--gold); font-size: 1.6rem; font-weight: 700; margin: 5px 0; }
+        .badge { position: absolute; top: 10px; left: 10px; padding: 5px 12px; border-radius: 5px; color: white; font-weight: 800; font-size: 11px; z-index: 10; }
+
+        /* Management Styles */
+        .mgmt-card { background: var(--card); padding: 25px; border-radius: 15px; border: 1px solid var(--gold); text-align: center; margin-bottom: 20px; }
+        .mgmt-num { font-size: 1.2rem; font-weight: 800; color: var(--gold); display: block; margin: 10px 0; }
+
+        /* Buttons */
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .btn { padding: 12px; border-radius: 8px; text-decoration: none; color: white; text-align: center; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; }
+        .btn-wa { background: var(--wa-green); }
+        .btn-cl { background: var(--call-blue); }
+        .btn-vid { background: #ff0000; grid-column: 1 / -1; margin-top: 5px; }
+
+        /* Admin Dashboard */
+        .panel { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--gold); }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; background: rgba(128,128,128,0.1); border: 1px solid #444; color: var(--text); }
+        .main-btn { background: var(--gold); color: #000; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: 800; cursor: pointer; margin-top: 10px; }
+
+        .hidden { display: none; }
+        footer { text-align: center; padding: 40px; background: #000; color: #666; font-size: 12px; margin-top: 50px; }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <div id="splash">
+        <div class="disney-text">A&S REALESTATE ISB</div>
+        <div class="dev-credit">DEVELOPED BY SAQIB ZAHEER SATTI</div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#" onclick="showPage('home')"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#" id="admin-link" class="hidden" onclick="showPage('admin')"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+        <a href="#" onclick="showPage('contact')"><i class="fa-solid fa-users-gear"></i> Management</a>
+        <a href="#" onclick="toggleMenu()" style="color:var(--gold);"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <nav>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="nav-logo" onclick="secretTrigger()">A&S OFFICIAL</div>
+        <div onclick="toggleTheme()" style="color:var(--gold); cursor:pointer;"><i class="fa-solid fa-circle-half-stroke"></i></div>
+    </nav>
+
+    <div class="container">
+        <div id="home" class="page">
+            <div class="filter-tabs">
+                <div class="tab active" onclick="filterData('All', this)">All Listings</div>
+                <div class="tab" onclick="filterData('Sale', this)">Sale</div>
+                <div class="tab" onclick="filterData('Rent', this)">Rent</div>
+            </div>
+            <div class="grid" id="main-grid">
+                <p style="text-align:center; width:100%; opacity:0.5;">Loading properties...</p>
+            </div>
+        </div>
+
+        <div id="admin" class="page hidden">
+            <div class="panel">
+                <h3>Admin Control</h3>
+                <div id="login-box">
+                    <input type="password" id="pin-input" placeholder="Enter PIN">
+                    <button class="main-btn" onclick="login()">Unlock Dashboard</button>
+                </div>
+                <div id="dash-box" class="hidden">
+                    <h4>Add Property</h4>
+                    <input type="text" id="p-title" placeholder="Plot / House Detail">
+                    <input type="text" id="p-price" placeholder="Price (e.g. 2.25 Crore)">
+                    <input type="text" id="p-map" placeholder="Google Maps Link">
+                    <input type="text" id="p-video" placeholder="Video URL (Optional)">
+                    <select id="p-area">
+                        <option>PHA Officers Residential</option>
+                        <option>Park View City</option>
+                        <option>Green Town</option>
+                        <option>Margalla Orchard</option>
+                        <option>Park Enclave</option>
+                        <option>Chak Shehzad</option>
+                        <option>Other Islamabad</option>
+                    </select>
+                    <select id="p-type">
+                        <option value="Sale">For Sale</option>
+                        <option value="Rent">For Rent</option>
+                    </select>
+                    <input type="file" id="p-file" accept="image/*">
+                    <button class="main-btn" id="upload-btn" onclick="saveData()">Publish Property</button>
+                    <hr>
+                    <input type="password" id="new-pin" placeholder="New PIN">
+                    <button class="main-btn" style="background:#444; color:white;" onclick="changePin()">Update Password</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="contact" class="page hidden">
+            <div class="grid">
+                <div class="mgmt-card">
+                    <h4>Umer Aftab</h4>
+                    <span class="mgmt-num">0311-1544996</span>
+                    <div class="btn-group">
+                        <a href="https://wa.me/923111544996" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="tel:+923111544996" class="btn btn-cl"><i class="fa fa-phone"></i> Call</a>
+                    </div>
+                </div>
+                <div class="mgmt-card">
+                    <h4>Bilal Aftab</h4>
+                    <span class="mgmt-num">0311-5496970</span>
+                    <div class="btn-group">
+                        <a href="https://wa.me/923115496970" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="tel:+923115496970" class="btn btn-cl"><i class="fa fa-phone"></i> Call</a>
+                    </div>
+                </div>
+                <div class="mgmt-card">
+                    <h4>Talha Aftab</h4>
+                    <span class="mgmt-num">0341-0585559</span>
+                    <div class="btn-group">
+                        <a href="https://wa.me/923410585559" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="tel:+923410585559" class="btn btn-cl"><i class="fa fa-phone"></i> Call</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <b>A&S REALESTATE ISB</b><br>Developed by Saqib Zaheer Satti
+    </footer>
+
+    <script>
+        // Navigation & UI Logic
+        function toggleMenu() {
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('overlay');
+            sb.classList.toggle('active');
+            ov.style.display = sb.classList.contains('active') ? 'block' : 'none';
+        }
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            if(window.innerWidth < 800) {
+                document.getElementById('sidebar').classList.remove('active');
+                document.getElementById('overlay').style.display = 'none';
+            }
+        }
+
+        function toggleTheme() {
+            const b = document.body;
+            b.setAttribute('data-theme', b.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        }
+
+        let taps = 0;
+        function secretTrigger() { taps++; if(taps>=5) { document.getElementById('admin-link').classList.remove('hidden'); alert("Admin Panel Enabled!"); taps=0; } }
+
+        // Admin Security
+        function login() {
+            const pin = localStorage.getItem('as_pin') || "as123";
+            if(document.getElementById('pin-input').value === pin) {
+                document.getElementById('login-box').classList.add('hidden');
+                document.getElementById('dash-box').classList.remove('hidden');
+            } else { alert("Wrong PIN!"); }
+        }
+
+        function changePin() {
+            const val = document.getElementById('new-pin').value;
+            if(val) { localStorage.setItem('as_pin', val); alert("PIN Updated!"); }
+        }
+
+        // Data Sync & Render
+        async function fetchProperties() {
+            try {
+                const res = await fetch('/get_properties');
+                window.db = await res.json();
+                render('All');
+            } catch (e) { console.error("Fetch error", e); }
+        }
+
+        function render(filter = 'All') {
+            const grid = document.getElementById('main-grid');
+            const filtered = filter === 'All' ? window.db : window.db.filter(x => x.type === filter);
+
+            if(!filtered || filtered.length === 0) {
+                grid.innerHTML = `<p style="text-align:center; width:100%;">No properties found.</p>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(x => `
+                <div class="card">
+                    <div class="badge" style="background:${x.type==='Sale'?'#d32f2f':'#2ecc71'}">${x.type}</div>
+                    <img src="${x.img}" loading="lazy">
+                    <div class="card-body">
+                        <small style="color:var(--gold); font-weight:bold;"><i class="fa-solid fa-location-dot"></i> ${x.area}</small>
+                        <div class="price">${x.price}</div>
+                        <h4 style="margin:5px 0;">${x.title}</h4>
+                        ${x.map ? `<a href="${x.map}" target="_blank" style="color:var(--call-blue); text-decoration:none; font-size:12px; display:block; margin-bottom:5px;"><i class="fa-solid fa-map-pin"></i> View Location</a>` : ''}
+                        <div class="btn-group">
+                            <a href="https://wa.me/923111544996?text=Interested in ${x.title}" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="tel:+923111544996" class="btn btn-cl"><i class="fa-solid fa-phone"></i> Call</a>
+                            ${x.video ? `<a href="${x.video}" target="_blank" class="btn btn-vid"><i class="fa-solid fa-play"></i> Video</a>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function saveData() {
+            const btn = document.getElementById('upload-btn');
+            const fileInput = document.getElementById('p-file');
+            if(!fileInput.files[0]) return alert("Image is required!");
+
+            btn.disabled = true; btn.innerText = "Publishing...";
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('title', document.getElementById('p-title').value);
+            formData.append('price', document.getElementById('p-price').value);
+            formData.append('map', document.getElementById('p-map').value);
+            formData.append('video', document.getElementById('p-video').value);
+            formData.append('area', document.getElementById('p-area').value);
+            formData.append('type', document.getElementById('p-type').value);
+
+            try {
+                const response = await fetch('/save_property', { method: 'POST', body: formData });
+                if(response.ok) {
+                    alert("Property Published Globally!");
+                    location.reload();
+                }
+            } catch (err) {
+                alert("Error saving!");
+                btn.disabled = false; btn.innerText = "Publish Property";
+            }
+        }
+
+        function filterData(type, btn) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            render(type);
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => document.getElementById('splash').remove(), 800);
+            }, 3000);
+            fetchProperties();
+        };
+    </script>
+</body>
+</html>
