@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # --- MONGODB CONNECTION ---
 # Password laazmi <db_password> ki jagah likhein
-MONGO_URI = "mongodb+srv://saqibzaheersattirocklight_db_user:<db_password>@cluster0.vvzewi4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = "mongodb+srv://saqibzaheersattirocklight_db_user:<DsUTBwyxsi5sdYf2>@cluster0.vvzewi4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 try:
     client = MongoClient(MONGO_URI)
