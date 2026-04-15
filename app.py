@@ -1,19 +1,18 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
-import json
 from pymongo import MongoClient
 
 app = Flask(__name__)
 
 # --- MONGODB CONNECTION ---
-# Yahan <DsUTBwyxsi5sdYf2> ki jagah apna asli password likhein
+# Password laazmi <db_password> ki jagah likhein
 MONGO_URI = "mongodb+srv://saqibzaheersattirocklight_db_user:<db_password>@cluster0.vvzewi4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 try:
     client = MongoClient(MONGO_URI)
-    db = client['realestate_db'] # Database ka naam
-    collection = db['properties'] # Collection ka naam
-    # Connection test karne ke liye
+    db = client['realestate_db']
+    collection = db['properties']
+    rates_collection = db['live_rates'] # Naya feature: Rates ke liye
     client.admin.command('ping')
     print("MongoDB Connected Successfully!")
 except Exception as e:
@@ -21,12 +20,14 @@ except Exception as e:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Database se latest headline rates uthana
+    rates_data = rates_collection.find_one({"type": "headline"})
+    current_rates = rates_data['text'] if rates_data else "Market Updates Coming Soon..."
+    return render_template('index.html', rates=current_rates)
 
 @app.route('/get_properties')
 def get_properties():
     try:
-        # MongoDB se latest properties nikalna (ulta order mein)
         props = list(collection.find({}, {'_id': 0}).sort('_id', -1))
         return jsonify(props)
     except Exception as e:
@@ -42,15 +43,31 @@ def save_property():
             "type": request.form.get('type'),
             "map": request.form.get('map'),
             "video": request.form.get('video'),
-            "img": "https://via.placeholder.com/300" # Placeholder kyunke Vercel file save nahi karta
+            "img": "https://via.placeholder.com/400x250"
         }
-        # MongoDB mein data insert karna
         collection.insert_one(new_data)
         return jsonify({"status": "success"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-# PWA Support
+# ADMIN PANEL: Headline update karne ke liye
+@app.route('/admin_rates', methods=['GET', 'POST'])
+def admin_rates():
+    if request.method == 'POST':
+        new_text = request.form.get('new_rates')
+        rates_collection.update_one({"type": "headline"}, {"$set": {"text": new_text}}, upsert=True)
+        return "<h2>Update Successful!</h2><a href='/'>Go to App</a>"
+    return '''
+        <body style="background:#0f172a; color:white; font-family:sans-serif; padding:20px; text-align:center;">
+            <h2>A&S Management Admin</h2>
+            <form method="post">
+                <p>Type New Headline Below:</p>
+                <textarea name="new_rates" style="width:90%; height:100px; padding:10px; border-radius:10px;"></textarea><br><br>
+                <button type="submit" style="padding:15px 30px; background:#00ffcc; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Update Marquee</button>
+            </form>
+        </body>
+    '''
+
 @app.route('/sw.js')
 def sw():
     return send_from_directory(os.getcwd(), 'sw.js')
@@ -59,7 +76,6 @@ def sw():
 def manifest():
     return send_from_directory(os.getcwd(), 'manifest.json')
 
-# Vercel integration
 app = app
 
 if __name__ == '__main__':
