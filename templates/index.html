@@ -2,670 +2,791 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A&S Management | Real Estate Official</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>A&S Management | Professional Real Estate Portal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Poppins:wght@200;300;400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- CORE DESIGN SYSTEM --- */
+        /* A&S MANAGEMENT OFFICIAL STYLESHEET
+           Theme: Luxury Dark Gold (Glassmorphism)
+           Developer: Saqib Zaheer Satti
+        */
+
         :root {
             --gold: #ffdf00;
-            --bg-dark: #020813;
-            --card-glass: rgba(255, 255, 255, 0.03);
-            --border-glass: rgba(255, 223, 0, 0.2);
-            --text-white: #ffffff;
-            --text-gray: #a0aec0;
-            --whatsapp: #25D366;
-            --call: #007bff;
+            --gold-bright: #fff380;
+            --bg-body: #010409;
+            --bg-nav: #0d1117;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 223, 0, 0.25);
+            --glass: blur(15px);
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --whatsapp: #2ea44f;
+            --call: #1f6feb;
+            --danger: #da3633;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-white);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
             font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
-            min-height: 100vh;
         }
 
-        /* 1. PREMIUM DISNEY SPLASH SCREEN */
-        #splash {
+        /* --- 1. PREMIUM DISNEY INTRO --- */
+        #disney-splash {
             position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, #0a192f 0%, #000 100%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0d1117 0%, #000 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 10000;
+            transition: opacity 1s ease, visibility 1s;
         }
 
-        .splash-logo {
+        .splash-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2rem, 8vw, 4rem);
+            font-size: clamp(2.5rem, 10vw, 5rem);
             color: var(--gold);
-            text-shadow: 0 0 30px rgba(255, 223, 0, 0.8);
-            letter-spacing: 12px;
+            text-shadow: 0 0 40px rgba(255, 223, 0, 0.5);
+            letter-spacing: 15px;
+            font-weight: 900;
+            animation: splashAnim 3s ease-in-out forwards;
             text-align: center;
-            animation: logoScale 3s forwards;
         }
 
-        .dev-credit {
-            margin-top: 30px;
+        .splash-sub {
+            margin-top: 25px;
             font-size: 14px;
-            letter-spacing: 6px;
-            color: white;
-            opacity: 0.6;
             text-transform: uppercase;
+            letter-spacing: 8px;
+            color: white;
+            opacity: 0.4;
         }
 
-        @keyframes logoScale {
-            0% { transform: scale(0.5); opacity: 0; filter: blur(10px); }
-            50% { transform: scale(1.1); opacity: 1; filter: blur(0px); }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes splashAnim {
+            0% { transform: scale(0.7); opacity: 0; filter: blur(15px); letter-spacing: 5px; }
+            50% { transform: scale(1.05); opacity: 1; filter: blur(0px); letter-spacing: 20px; }
+            100% { transform: scale(1); opacity: 1; letter-spacing: 15px; }
         }
 
-        /* 2. NAVIGATION & MARQUEE */
+        /* --- 2. NAVIGATION BAR --- */
         nav {
-            background: #010813;
-            padding: 20px 30px;
+            background: var(--bg-nav);
+            height: 85px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--gold);
+            padding: 0 40px;
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 2px solid var(--gold);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        .hamburger {
-            width: 35px;
-            height: 20px;
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            font-weight: 900;
+            letter-spacing: 3px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .menu-trigger {
+            width: 40px;
+            height: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
         }
 
-        .hamburger span {
+        .menu-trigger span {
             width: 100%;
             height: 4px;
             background: var(--gold);
-            border-radius: 10px;
+            border-radius: 5px;
+            transition: 0.3s;
         }
 
-        .nav-title {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 1.4rem;
-            letter-spacing: 3px;
-        }
-
-        .marquee-bar {
-            background: rgba(255, 223, 0, 0.05);
-            color: var(--gold);
-            padding: 12px 0;
-            font-weight: 700;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* 3. SIDEBAR */
+        /* --- 3. SIDEBAR NAVIGATION --- */
         .sidebar {
             position: fixed;
             top: 0;
             left: -350px;
             width: 320px;
             height: 100%;
-            background: #010813;
+            background: #0d1117;
             z-index: 2000;
-            padding: 60px 25px;
-            border-right: 2px solid var(--gold);
-            box-shadow: 30px 0 60px rgba(0,0,0,0.9);
+            padding: 80px 30px;
+            border-right: 3px solid var(--gold);
+            transition: 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+            box-shadow: 50px 0 100px rgba(0,0,0,0.9);
         }
 
         .sidebar.active { left: 0; }
 
-        .sidebar-link {
+        .sidebar-item {
             display: flex;
             align-items: center;
-            gap: 20px;
-            color: var(--text-gray);
+            gap: 25px;
+            color: var(--text-secondary);
             text-decoration: none;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+            padding: 22px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
             background: rgba(255,255,255,0.02);
+            font-weight: 600;
         }
 
-        .sidebar-link i { color: var(--gold); width: 25px; text-align: center; }
-        .sidebar-link:hover, .sidebar-link.active {
-            background: rgba(255, 223, 0, 0.1);
+        .sidebar-item i { color: var(--gold); font-size: 1.4rem; }
+        .sidebar-item:hover, .sidebar-item.active {
+            background: rgba(255, 223, 0, 0.12);
             color: var(--gold);
-            transform: translateX(10px);
+            transform: scale(1.05) translateX(10px);
         }
 
-        .overlay {
+        .side-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(12px);
             display: none;
             z-index: 1500;
         }
 
-        /* 4. MAIN CONTENT AREA */
-        .wrapper {
-            padding: 30px 20px;
-            max-width: 1400px;
+        /* --- 4. LIVE MARQUEE STRIP --- */
+        .marquee-strip {
+            background: linear-gradient(90deg, #000 0%, #0d1117 50%, #000 100%);
+            color: var(--gold);
+            padding: 15px 0;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- 5. MAIN PAGE LAYOUT --- */
+        .content-body {
+            padding: 50px 30px;
+            max-width: 1500px;
             margin: auto;
         }
 
-        .section-title {
+        .page-heading {
             text-align: center;
             font-family: 'Cinzel';
             color: var(--gold);
-            font-size: 2rem;
-            margin-bottom: 40px;
-            position: relative;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 60px;
         }
 
-        .section-title::after {
+        .page-heading::after {
             content: '';
             display: block;
-            width: 80px;
-            height: 3px;
+            width: 120px;
+            height: 4px;
             background: var(--gold);
-            margin: 15px auto;
+            margin: 20px auto;
+            border-radius: 10px;
         }
 
-        /* 5. PROPERTY LISTINGS GRID */
-        .listing-grid {
+        /* --- 6. PROPERTY CARDS (HEAVY) --- */
+        .listing-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
         }
 
-        .card {
-            background: var(--card-glass);
-            border-radius: 25px;
+        .p-card {
+            background: var(--card-bg);
+            border-radius: 35px;
             overflow: hidden;
-            border: 1px solid var(--border-glass);
-            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass);
             position: relative;
+            transition: 0.5s;
         }
 
-        .card:hover {
-            transform: translateY(-15px);
+        .p-card:hover {
+            transform: translateY(-20px) scale(1.02);
             border-color: var(--gold);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
 
-        .card-img-container {
-            height: 250px;
+        .p-img-box {
+            height: 280px;
             position: relative;
             overflow: hidden;
         }
 
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
+        .p-img-box img { width: 100%; height: 100%; object-fit: cover; transition: 1s; }
+        .p-card:hover .p-img-box img { transform: scale(1.15); }
 
-        .type-badge {
+        .p-badge {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 25px;
+            right: 25px;
             background: var(--gold);
             color: #000;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 0.8rem;
+            padding: 10px 20px;
+            border-radius: 14px;
             font-weight: 800;
-            text-transform: uppercase;
+            font-size: 0.8rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .card-info { padding: 25px; }
+        .p-details { padding: 35px; }
 
-        .card-price {
-            font-size: 1.8rem;
+        .p-price {
+            font-size: 2.2rem;
             font-weight: 800;
             color: var(--gold);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            display: block;
         }
 
-        .card-loc {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin-bottom: 25px;
+        .p-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            height: 1.4em;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .p-loc {
+            color: var(--text-secondary);
+            font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin-bottom: 35px;
         }
 
-        .btn-flex {
+        .action-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .btn {
-            padding: 14px;
-            border-radius: 15px;
-            text-decoration: none;
-            font-weight: 700;
+        .action-btn {
+            height: 60px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
             border: none;
             cursor: pointer;
-            font-size: 0.9rem;
+            transition: 0.3s;
         }
 
-        .btn-wa { background: var(--whatsapp); color: white; }
-        .btn-call { background: var(--call); color: white; }
-        .btn-danger { 
+        .btn-wa { background-color: var(--whatsapp); color: white; }
+        .btn-call { background-color: var(--call); color: white; }
+        .btn-delete-prop { 
             grid-column: 1 / -1; 
-            background: #ef4444; 
+            background: var(--danger); 
             color: white; 
-            margin-top: 10px;
-            opacity: 0.8;
+            margin-top: 15px; 
+            font-size: 0.8rem;
         }
 
-        /* 6. TEAM MANAGEMENT SECTION (Customized) */
-        .team-grid {
+        /* --- 7. TEAM MANAGEMENT SECTION --- */
+        .management-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
         }
 
-        .team-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
-            padding: 40px 30px;
-            border-radius: 30px;
-            border: 1px solid var(--gold);
+        .member-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0.5) 100%);
+            padding: 50px 40px;
+            border-radius: 40px;
+            border: 2px solid var(--card-border);
             text-align: center;
-            position: relative;
         }
 
-        .team-card i.main-icon {
-            font-size: 4rem;
+        .member-card i.p-icon {
+            font-size: 5rem;
             color: var(--gold);
-            margin-bottom: 20px;
-            display: block;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 10px var(--gold));
         }
 
-        .team-name { font-size: 1.5rem; color: var(--gold); font-family: 'Cinzel'; margin-bottom: 5px; }
-        .team-rank { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 25px; letter-spacing: 2px; text-transform: uppercase; }
+        .m-name { font-family: 'Cinzel'; font-size: 1.8rem; color: var(--gold); margin-bottom: 5px; }
+        .m-role { color: var(--text-secondary); letter-spacing: 3px; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 30px; }
 
-        /* 7. ADMIN CONTROL PANEL */
-        .admin-box {
-            max-width: 800px;
-            margin: 40px auto;
-            background: var(--card-glass);
-            padding: 40px;
-            border-radius: 30px;
+        /* --- 8. ADMIN DASHBOARD & FORMS --- */
+        .admin-wrap {
+            max-width: 900px;
+            margin: auto;
+            background: var(--bg-nav);
+            padding: 50px;
+            border-radius: 40px;
             border: 2px solid var(--gold);
+            box-shadow: 0 20px 80px rgba(0,0,0,0.5);
         }
 
-        .form-row { margin-bottom: 25px; }
+        .form-item { margin-bottom: 35px; }
 
-        label { display: block; margin-bottom: 12px; color: var(--gold); font-weight: 600; font-size: 0.9rem; }
+        .form-label {
+            display: block;
+            margin-bottom: 15px;
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
 
-        .input {
+        .form-input {
             width: 100%;
-            padding: 18px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #333;
-            border-radius: 15px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .input:focus { border-color: var(--gold); }
-
-        .upload-area {
-            border: 2px dashed #555;
-            padding: 40px;
-            text-align: center;
+            height: 65px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid #222;
             border-radius: 20px;
+            padding: 0 25px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-input:focus { border-color: var(--gold); background: rgba(0,0,0,0.5); }
+
+        textarea.form-input { height: 150px; padding: 25px; }
+
+        .upload-zone {
+            border: 3px dashed #333;
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        #preview {
+        .upload-zone:hover { border-color: var(--gold); background: rgba(255,223,0,0.03); }
+
+        #image-preview-admin {
             width: 100%;
-            max-height: 400px;
+            max-height: 450px;
             object-fit: contain;
-            border-radius: 15px;
-            margin-top: 20px;
+            border-radius: 25px;
+            margin-top: 30px;
             display: none;
+            border: 1px solid var(--gold);
         }
 
-        .submit-btn {
+        .master-btn {
             width: 100%;
-            padding: 20px;
+            height: 75px;
             background: var(--gold);
             color: #000;
             border: none;
-            border-radius: 15px;
-            font-weight: 800;
-            font-size: 1.1rem;
+            border-radius: 22px;
+            font-size: 1.3rem;
+            font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 15px 30px rgba(255,223,0,0.2);
+            box-shadow: 0 15px 35px rgba(255, 223, 0, 0.3);
+            text-transform: uppercase;
         }
 
-        .submit-btn:hover { transform: scale(0.98); }
+        .master-btn:active { transform: scale(0.97); }
 
-        /* 8. LOADING & UTILS */
+        /* --- 9. UTILITIES & ANIMATIONS --- */
         .hidden { display: none !important; }
-        .loader { text-align: center; padding: 100px; font-size: 3rem; color: var(--gold); }
+
+        #main-loader {
+            display: flex;
+            justify-content: center;
+            padding: 100px;
+        }
+
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 6px solid rgba(255,223,0,0.1);
+            border-top: 6px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         footer {
             text-align: center;
-            padding: 100px 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            margin-top: 60px;
-            opacity: 0.5;
-            font-size: 0.8rem;
-            line-height: 2;
+            padding: 120px 40px;
+            background: #000;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255,223,0,0.1);
+        }
+
+        .footer-logo { font-family: 'Cinzel'; color: var(--gold); font-size: 2.2rem; margin-bottom: 20px; }
+
+        /* --- MOBILE ADAPTATION --- */
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; height: 75px; }
+            .content-body { padding: 30px 15px; }
+            .action-grid { grid-template-columns: 1fr; gap: 10px; }
+            .p-card { border-radius: 25px; }
+            .admin-wrap { padding: 25px; border-radius: 25px; }
+            .sidebar { width: 280px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="splash">
-        <div class="splash-logo">A&S MANAGEMENT</div>
-        <div class="dev-credit">Developed by Saqib Zaheer Satti</div>
+    <div id="disney-splash">
+        <div class="splash-title">A&S MANAGEMENT</div>
+        <div class="splash-sub">SAQIB ZAHEER SATTI PRODUCTION</div>
     </div>
 
-    <div class="sidebar" id="sidebar">
-        <div style="text-align: right; margin-bottom: 50px;" onclick="toggleMenu()">
-            <i class="fa-solid fa-circle-xmark" style="font-size: 2rem; color: var(--gold); cursor:pointer;"></i>
+    <div class="sidebar" id="main-sidebar">
+        <div style="text-align: right; margin-bottom: 50px;" onclick="toggleSidebar()">
+            <i class="fa-solid fa-circle-xmark" style="font-size: 2.5rem; color: var(--gold); cursor:pointer;"></i>
         </div>
-        <a href="#" class="sidebar-link active" onclick="navigate('home')"><i class="fa fa-house"></i> Home Listings</a>
-        <a href="#" class="sidebar-link" onclick="navigate('team')"><i class="fa fa-users"></i> Management Team</a>
-        <a href="#" class="sidebar-link" onclick="navigate('admin')"><i class="fa fa-lock"></i> Admin Control</a>
-        <a href="https://wa.me/923410585559" class="sidebar-link"><i class="fab fa-whatsapp"></i> Instant Support</a>
+        <a href="#" class="sidebar-item active" onclick="switchPage('home')">
+            <i class="fa-solid fa-house-chimney"></i> Property Portal
+        </a>
+        <a href="#" class="sidebar-item" onclick="switchPage('team')">
+            <i class="fa-solid fa-users-gear"></i> Expert Team
+        </a>
+        <a href="#" class="sidebar-item" onclick="switchPage('admin')">
+            <i class="fa-solid fa-shield-lock"></i> Master Admin
+        </a>
+        <a href="https://wa.me/923410585559" class="sidebar-item">
+            <i class="fa-brands fa-whatsapp-square"></i> Live Support
+        </a>
     </div>
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="side-overlay" id="side-overlay" onclick="toggleSidebar()"></div>
 
     <nav>
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="menu-trigger" onclick="toggleSidebar()">
             <span></span><span></span><span></span>
         </div>
-        <div class="nav-title" onclick="navigate('home')">A&S OFFICIAL</div>
-        <div id="status-dot" style="color:var(--gold); font-size: 1.5rem;"><i class="fa fa-shield-check"></i></div>
+        <a href="/" class="nav-logo">A&S MANAGEMENT</a>
+        <div style="color:var(--gold); font-size: 1.6rem;"><i class="fa-solid fa-crown"></i></div>
     </nav>
 
-    <div class="marquee-bar">
-        <marquee scrollamount="9">
-            🔥 LIVE UPDATES: {{ rates }} | 🏛️ A&S MANAGEMENT: ISLAMABAD SECTOR SPECIALISTS | ⭐ RELIABLE REAL ESTATE CONSULTANTS
+    <div class="marquee-strip">
+        <marquee behavior="scroll" direction="left" scrollamount="10">
+            🏛️ A&S MANAGEMENT: Official Partners for DHA, Bahria Enclave, and PHC Residential. || 📈 LIVE MARKET RATES: {{ rates }} || ⭐ EXPERIENCE THE LUXURY OF TRUSTED CONSULTANCY.
         </marquee>
     </div>
 
-    <div class="wrapper">
+    <div class="content-body">
         
-        <section id="page-home">
-            <h2 class="section-title">Verified Listings</h2>
-            <div id="loader" class="loader"><i class="fa fa-spinner fa-spin"></i></div>
-            <div class="listing-grid" id="main-grid"></div>
+        <section id="sec-home">
+            <h1 class="page-heading">Exclusive Listings</h1>
+            <div id="main-loader"><div class="spinner"></div></div>
+            <div class="listing-container" id="property-display-grid">
+                </div>
         </section>
 
-        <section id="page-team" class="hidden">
-            <h2 class="section-title">Our Management</h2>
-            <div class="team-grid">
-                <div class="team-card">
-                    <i class="fa-solid fa-user-tie main-icon"></i>
-                    <h3 class="team-name">Talha Aftab</h3>
-                    <p class="team-rank">Managing Director</p>
-                    <div class="btn-flex">
-                        <a href="https://wa.me/923410585559" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="tel:+923410585559" class="btn btn-call"><i class="fa fa-phone"></i> Call Now</a>
+        <section id="sec-team" class="hidden">
+            <h1 class="page-heading">Our Executive Board</h1>
+            <div class="management-grid">
+                <div class="member-card">
+                    <i class="fa-solid fa-user-tie p-icon"></i>
+                    <h2 class="m-name">Talha Aftab</h2>
+                    <p class="m-role">Chief Executive Officer</p>
+                    <div class="action-grid">
+                        <a href="https://wa.me/923410585559" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i> Chat</a>
+                        <a href="tel:+923410585559" class="action-btn btn-call"><i class="fa fa-phone"></i> Call</a>
                     </div>
                 </div>
 
-                <div class="team-card">
-                    <i class="fa-solid fa-user-tie main-icon"></i>
-                    <h3 class="team-name">Bilal Aftab</h3>
-                    <p class="team-rank">Director Sales</p>
-                    <div class="btn-flex">
-                        <a href="https://wa.me/923005544996" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="tel:+923005544996" class="btn btn-call"><i class="fa fa-phone"></i> Call Now</a>
+                <div class="member-card">
+                    <i class="fa-solid fa-user-tie p-icon"></i>
+                    <h2 class="m-name">Bilal Aftab</h2>
+                    <p class="m-role">Director of Sales</p>
+                    <div class="action-grid">
+                        <a href="https://wa.me/923005544996" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i> Chat</a>
+                        <a href="tel:+923005544996" class="action-btn btn-call"><i class="fa fa-phone"></i> Call</a>
                     </div>
                 </div>
 
-                <div class="team-card">
-                    <i class="fa-solid fa-user-tie main-icon"></i>
-                    <h3 class="team-name">Umer Aftab</h3>
-                    <p class="team-rank">Head of Operations</p>
-                    <div class="btn-flex">
-                        <a href="https://wa.me/923111544996" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="tel:+923111544996" class="btn btn-call"><i class="fa fa-phone"></i> Call Now</a>
+                <div class="member-card">
+                    <i class="fa-solid fa-user-tie p-icon"></i>
+                    <h2 class="m-name">Umer Aftab</h2>
+                    <p class="m-role">Operations Manager</p>
+                    <div class="action-grid">
+                        <a href="https://wa.me/923111544996" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i> Chat</a>
+                        <a href="tel:+923111544996" class="action-btn btn-call"><i class="fa fa-phone"></i> Call</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="page-admin" class="hidden">
-            <div id="admin-gate" class="admin-box">
-                <h2 style="text-align:center; color:var(--gold); margin-bottom:30px;">Security Access</h2>
-                <div class="form-row">
-                    <label>Management Secret PIN</label>
-                    <input type="password" id="login-pin" class="input" placeholder="Enter Secure Code">
+        <section id="sec-admin" class="hidden">
+            
+            <div id="admin-gate-box" class="admin-wrap">
+                <h2 style="text-align:center; color:var(--gold); margin-bottom:40px; font-family:'Cinzel';">Master Security</h2>
+                <div class="form-item">
+                    <label class="form-label">System Authentication PIN</label>
+                    <input type="password" id="gate-pin-input" class="form-input" placeholder="••••••••">
                 </div>
-                <button class="submit-btn" onclick="verifyAdmin()">Unlock Portal</button>
+                <button class="master-btn" onclick="authenticateAdmin()">Grant Access</button>
             </div>
 
-            <div id="admin-panel" class="hidden">
-                <div class="admin-box">
-                    <h3 style="color:var(--gold); margin-bottom:25px;">1. Update Live Marquee</h3>
-                    <div class="form-row">
-                        <textarea id="marquee-input" class="input" rows="3" placeholder="Enter latest rates/news here..."></textarea>
+            <div id="admin-dashboard-box" class="hidden">
+                
+                <div class="admin-wrap" style="margin-bottom: 40px;">
+                    <h3 style="color:var(--gold); margin-bottom:25px;"><i class="fa-solid fa-bullhorn"></i> Broadcast Updates</h3>
+                    <div class="form-item">
+                        <textarea id="admin-marquee-text" class="form-input" placeholder="Type rate updates here..."></textarea>
                     </div>
-                    <button class="submit-btn" onclick="updateMarquee()">Update Live Streams</button>
+                    <button class="master-btn" style="height:60px; font-size:1rem;" onclick="syncMarquee()">Sync Live Marquee</button>
                 </div>
 
-                <div class="admin-box">
-                    <h3 style="color:var(--gold); margin-bottom:25px;">2. Add New Listing</h3>
-                    <div class="form-row">
-                        <label>Property Heading</label>
-                        <input type="text" id="p-title" class="input" placeholder="e.g. 5 Marla Plot G-13">
+                <div class="admin-wrap" style="margin-bottom: 40px;">
+                    <h3 style="color:var(--gold); margin-bottom:25px;"><i class="fa-solid fa-file-circle-plus"></i> New Property Listing</h3>
+                    
+                    <div class="form-item">
+                        <label class="form-label">Property Title</label>
+                        <input type="text" id="p-title-in" class="form-input" placeholder="e.g. 1 Kanal Modern Villa">
                     </div>
-                    <div class="form-row">
-                        <label>Demanded Price</label>
-                        <input type="text" id="p-price" class="input" placeholder="e.g. 1.25 Crore">
+
+                    <div class="form-item">
+                        <label class="form-label">Final Price</label>
+                        <input type="text" id="p-price-in" class="form-input" placeholder="e.g. 6.85 Crore">
                     </div>
-                    <div class="form-row">
-                        <label>Select Sector/Location</label>
-                        <select id="p-loc" class="input">
+
+                    <div class="form-item">
+                        <label class="form-label">Sector Location</label>
+                        <select id="p-loc-in" class="form-input">
                             <option>PHC Officers Residential</option>
                             <option>Bahria Enclave Islamabad</option>
                             <option>Park View City</option>
                             <option>Park Enclave</option>
                             <option>Green Town</option>
                             <option>Margalla Orchard</option>
-                            <option>F-Series Sectors</option>
-                            <option>G-Series Sectors</option>
-                            <option>DHA Islamabad</option>
+                            <option>DHA Islamabad (All Phases)</option>
+                            <option>Gulberg Greens</option>
+                            <option>F-6 / F-7 / F-8 Sectors</option>
+                            <option>G-11 / G-13 / G-14 Sectors</option>
                         </select>
                     </div>
-                    <div class="form-row">
-                        <label>Property Photo (Direct Upload)</label>
-                        <div class="upload-area" onclick="document.getElementById('p-file').click()">
-                            <i class="fa fa-cloud-upload" style="font-size: 2.5rem; color: var(--gold);"></i>
-                            <p style="margin-top:10px;">Select from Gallery/Camera</p>
-                            <input type="file" id="p-file" class="hidden" accept="image/*" onchange="handleImage(this)">
-                            <img id="preview" src="#">
+
+                    <div class="form-item">
+                        <label class="form-label">Media Upload (Direct)</label>
+                        <div class="upload-zone" onclick="document.getElementById('p-image-file').click()">
+                            <i class="fa-solid fa-camera-retro" style="font-size: 3rem; color: var(--gold);"></i>
+                            <p style="margin-top:15px; font-weight:700;">Select Property Photo</p>
+                            <input type="file" id="p-image-file" class="hidden" accept="image/*" onchange="processAdminImage(this)">
+                            <img id="image-preview-admin" src="#">
                         </div>
                     </div>
-                    <button class="submit-btn" onclick="uploadProperty()">Publish Live Listing</button>
+
+                    <button class="master-btn" onclick="pushPropertyToCloud()">Publish Listing</button>
                 </div>
 
-                <div class="admin-box">
-                    <h3 style="color:var(--gold); margin-bottom:25px;">3. Security Settings</h3>
-                    <div class="form-row">
-                        <label>Set New PIN Code</label>
-                        <input type="password" id="new-pin" class="input" placeholder="New Secret PIN">
+                <div class="admin-wrap">
+                    <h3 style="color:var(--gold); margin-bottom:25px;"><i class="fa-solid fa-user-lock"></i> Security Maintenance</h3>
+                    <div class="form-item">
+                        <label class="form-label">Set New Security PIN</label>
+                        <input type="password" id="admin-new-pin" class="form-input" placeholder="New Secret PIN">
                     </div>
-                    <button class="submit-btn" style="background:#333; color:white;" onclick="updatePin()">Save New Password</button>
+                    <button class="master-btn" style="height:60px; background:#111; color:white; border:1px solid #333;" onclick="syncNewPin()">Update Password</button>
                 </div>
+
             </div>
         </section>
 
     </div>
 
     <footer>
-        <div style="font-family:'Cinzel'; color:var(--gold); font-size:1.5rem;">A&S MANAGEMENT</div>
-        <p>Premium Real Estate Services in Islamabad & Rawalpindi</p>
-        <p>© 2026 Developed by Saqib Zaheer Satti. All rights reserved.</p>
+        <div class="footer-logo">A&S MANAGEMENT</div>
+        <p style="color:var(--text-secondary); max-width:600px; margin:auto;">The most trusted name in Islamabad Real Estate. We provide verified properties with transparent deals and professional consultancy.</p>
+        <div style="margin-top:40px; border-top:1px solid #222; padding-top:40px;">
+            <p>© 2026 Developed by <span style="color:var(--gold)">Saqib Zaheer Satti</span>. All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
-        let allListings = [];
-        let base64String = "";
-        let isAdminLoggedIn = false;
+        // --- GLOBAL VARIABLES ---
+        let propertyList = [];
+        let tempBase64 = "";
+        let adminSession = false;
 
-        // UI NAVIGATION
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-            const overlay = document.getElementById('overlay');
-            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+        // --- UI CONTROLS ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('main-sidebar');
+            const overlay = document.getElementById('side-overlay');
+            sidebar.classList.toggle('active');
+            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
         }
 
-        function navigate(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            document.getElementById('page-' + id).classList.remove('hidden');
-            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-            if(window.innerWidth < 800) toggleMenu();
+        function switchPage(pageId) {
+            document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById('sec-' + pageId).classList.remove('hidden');
+            
+            document.querySelectorAll('.sidebar-item').forEach(link => link.classList.remove('active'));
+            if(window.innerWidth < 900) toggleSidebar();
             window.scrollTo(0,0);
         }
 
-        // IMAGE PREVIEW
-        function handleImage(input) {
-            const preview = document.getElementById('preview');
+        // --- IMAGE PROCESSING ---
+        function processAdminImage(input) {
+            const preview = document.getElementById('image-preview-admin');
             const file = input.files[0];
             const reader = new FileReader();
-            reader.onloadend = () => {
+
+            reader.onloadend = function() {
                 preview.src = reader.result;
                 preview.style.display = 'block';
-                base64String = reader.result;
+                tempBase64 = reader.result;
             }
-            if(file) reader.readAsDataURL(file);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
         }
 
-        // ADMIN ACCESS
-        async function verifyAdmin() {
-            const pin = document.getElementById('login-pin').value;
-            const res = await fetch('/get_pin');
-            const data = await res.json();
-            if(pin === data.pin) {
-                isAdminLoggedIn = true;
-                document.getElementById('admin-gate').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                refreshData();
-            } else { alert("Error: Invalid PIN Code!"); }
+        // --- SECURITY ---
+        async function authenticateAdmin() {
+            const pinVal = document.getElementById('gate-pin-input').value;
+            const response = await fetch('/get_pin');
+            const data = await response.json();
+
+            if(pinVal === data.pin) {
+                adminSession = true;
+                document.getElementById('admin-gate-box').classList.add('hidden');
+                document.getElementById('admin-dashboard-box').classList.remove('hidden');
+                fetchCloudData(); // Re-render to show delete buttons
+            } else {
+                alert("CRITICAL: Authentication Failed. Unauthorized access detected.");
+            }
         }
 
-        // CLOUD OPERATIONS
-        async function refreshData() {
-            document.getElementById('loader').classList.remove('hidden');
-            const res = await fetch('/get_properties');
-            allListings = await res.json();
-            renderGrids();
-            document.getElementById('loader').classList.add('hidden');
+        // --- CLOUD SYNC ---
+        async function fetchCloudData() {
+            document.getElementById('main-loader').classList.remove('hidden');
+            try {
+                const res = await fetch('/get_properties');
+                propertyList = await res.json();
+                renderUI();
+            } catch (err) { console.error("Cloud Error:", err); }
+            document.getElementById('main-loader').classList.add('hidden');
         }
 
-        function renderGrids() {
-            const grid = document.getElementById('main-grid');
-            if(allListings.length === 0) {
-                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:50px; opacity:0.5;">No listings available in cloud.</p>`;
+        function renderUI() {
+            const grid = document.getElementById('property-display-grid');
+            if(propertyList.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:100px; opacity:0.3;"><h1>No active listings in database.</h1></div>`;
                 return;
             }
 
-            grid.innerHTML = allListings.map(p => `
-                <div class="card">
-                    <div class="card-img-container">
-                        <div class="type-badge">Verified</div>
-                        <img src="${p.img}" class="card-img">
+            grid.innerHTML = propertyList.map(item => `
+                <div class="p-card">
+                    <div class="p-img-box">
+                        <div class="p-badge">Official Listing</div>
+                        <img src="${item.img || 'https://via.placeholder.com/800x600'}">
                     </div>
-                    <div class="card-info">
-                        <div class="card-price">PKR ${p.price}</div>
-                        <h3 style="margin-bottom:10px;">${p.title}</h3>
-                        <div class="card-loc"><i class="fa fa-map-marker"></i> ${p.area}</div>
-                        <div class="btn-flex">
-                            <a href="https://wa.me/923410585559?text=Inquiry: ${p.title}" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                            <a href="tel:+923410585559" class="btn btn-call"><i class="fa fa-phone"></i> Call</a>
-                            ${isAdminLoggedIn ? `<button class="btn btn-danger" onclick="deleteItem('${p._id}')">DELETE PROPERTY</button>` : ''}
+                    <div class="p-details">
+                        <span class="p-price">PKR ${item.price}</span>
+                        <h3 class="p-title">${item.title}</h3>
+                        <div class="p-loc"><i class="fa-solid fa-location-dot" style="color:var(--gold)"></i> ${item.area}</div>
+                        <div class="action-grid">
+                            <a href="https://wa.me/923410585559?text=Inquiry for: ${item.title}" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="tel:+923410585559" class="action-btn btn-call"><i class="fa fa-phone"></i> Call Team</a>
+                            ${adminSession ? `<button class="action-btn btn-delete-prop" onclick="removeListing('${item._id}')"><i class="fa fa-trash"></i> DELETE PERMANENTLY</button>` : ''}
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function uploadProperty() {
-            if(!base64String) return alert("Please select a photo first!");
-            const btn = event.target;
-            btn.innerText = "UPLOADING TO CLOUD...";
-            btn.disabled = true;
+        async function pushPropertyToCloud() {
+            const title = document.getElementById('p-title-in').value;
+            const price = document.getElementById('p-price-in').value;
+            const area = document.getElementById('p-loc-in').value;
 
-            const payload = {
-                title: document.getElementById('p-title').value,
-                price: document.getElementById('p-price').value,
-                area: document.getElementById('p-loc').value,
-                img: base64String
-            };
+            if(!title || !price || !tempBase64) return alert("Validation Error: All fields are mandatory.");
+
+            const btn = event.target;
+            btn.innerText = "UPLOADING TO CLOUD DATABASE...";
+            btn.disabled = true;
 
             const res = await fetch('/save_property', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ title, price, area, img: tempBase64 })
             });
 
-            if(res.ok) { alert("Successfully Published!"); location.reload(); }
+            if(res.ok) { alert("Success: Property is now LIVE."); location.reload(); }
+            else { alert("Error during upload."); btn.disabled = false; btn.innerText = "Publish Listing"; }
         }
 
-        async function deleteItem(id) {
-            if(confirm("Confirm Delete Listing?")) {
-                await fetch('/delete_property', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({id: id})
-                });
-                refreshData();
-            }
+        async function removeListing(id) {
+            if(!confirm("Are you 100% sure? This cannot be undone.")) return;
+            await fetch('/delete_property', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ id: id })
+            });
+            fetchCloudData();
         }
 
-        async function updateMarquee() {
-            const txt = document.getElementById('marquee-input').value;
+        async function syncMarquee() {
+            const val = document.getElementById('admin-marquee-text').value;
             await fetch('/update_settings', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({marquee: txt})
+                body: JSON.stringify({ marquee: val })
             });
-            alert("Live Marquee Updated!"); location.reload();
+            alert("Cloud Synced: Marquee updated for all users.");
+            location.reload();
         }
 
-        async function updatePin() {
-            const pin = document.getElementById('new-pin').value;
+        async function syncNewPin() {
+            const pin = document.getElementById('admin-new-pin').value;
             await fetch('/update_settings', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({pin: pin})
+                body: JSON.stringify({ pin: pin })
             });
-            alert("PIN Updated!");
+            alert("Security Alert: Admin PIN has been updated.");
         }
 
-        // STARTUP
+        // --- STARTUP SEQUENCE ---
         window.onload = () => {
+            // Splash Control
             setTimeout(() => {
-                const splash = document.getElementById('splash');
+                const splash = document.getElementById('disney-splash');
                 splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 1000);
+                setTimeout(() => splash.classList.add('hidden'), 1000);
             }, 3500);
-            refreshData();
+
+            fetchCloudData();
         };
     </script>
 </body>
