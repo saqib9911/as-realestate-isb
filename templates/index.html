@@ -3,42 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A&S Real Estate | Management Dashboard</title>
+    <title>A&S Management | Real Estate Official</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- GLOBAL STYLES --- */
+        /* --- CORE DESIGN SYSTEM --- */
         :root {
             --gold: #ffdf00;
-            --bg-deep: #02060e;
+            --bg-dark: #020813;
             --card-glass: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 223, 0, 0.2);
-            --accent: #1e3a8a;
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --danger: #ef4444;
-            --success: #22c55e;
+            --border-glass: rgba(255, 223, 0, 0.2);
+            --text-white: #ffffff;
+            --text-gray: #a0aec0;
+            --whatsapp: #25D366;
+            --call: #007bff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: 'Poppins', sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* 1. DISNEY SPLASH SCREEN (Premium) */
-        #splash-screen {
+        /* 1. PREMIUM DISNEY SPLASH SCREEN */
+        #splash {
             position: fixed;
             inset: 0;
             background: radial-gradient(circle at center, #0a192f 0%, #000 100%);
@@ -49,34 +43,35 @@
             z-index: 9999;
         }
 
-        .disney-logo {
+        .splash-logo {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            font-size: clamp(2rem, 8vw, 4rem);
             color: var(--gold);
-            text-shadow: 0 0 30px rgba(255, 223, 0, 0.6);
-            letter-spacing: 8px;
-            animation: logoEntrance 2.5s ease-out forwards;
+            text-shadow: 0 0 30px rgba(255, 223, 0, 0.8);
+            letter-spacing: 12px;
             text-align: center;
+            animation: logoScale 3s forwards;
         }
 
-        .dev-tag {
-            margin-top: 20px;
-            font-size: 12px;
-            letter-spacing: 5px;
+        .dev-credit {
+            margin-top: 30px;
+            font-size: 14px;
+            letter-spacing: 6px;
             color: white;
-            opacity: 0.5;
+            opacity: 0.6;
             text-transform: uppercase;
         }
 
-        @keyframes logoEntrance {
-            0% { opacity: 0; transform: scale(0.8) translateY(20px); letter-spacing: 2px; }
-            100% { opacity: 1; transform: scale(1) translateY(0); letter-spacing: 8px; }
+        @keyframes logoScale {
+            0% { transform: scale(0.5); opacity: 0; filter: blur(10px); }
+            50% { transform: scale(1.1); opacity: 1; filter: blur(0px); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         /* 2. NAVIGATION & MARQUEE */
         nav {
             background: #010813;
-            padding: 15px 25px;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -84,86 +79,111 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .nav-brand {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 1.2rem;
-            letter-spacing: 2px;
+        .hamburger {
+            width: 35px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             cursor: pointer;
         }
 
-        .marquee-container {
-            background: rgba(255, 223, 0, 0.08);
+        .hamburger span {
+            width: 100%;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        .nav-title {
+            font-family: 'Cinzel', serif;
             color: var(--gold);
-            padding: 10px 0;
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+        }
+
+        .marquee-bar {
+            background: rgba(255, 223, 0, 0.05);
+            color: var(--gold);
+            padding: 12px 0;
+            font-weight: 700;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* 3. SIDEBAR MENU */
+        /* 3. SIDEBAR */
         .sidebar {
             position: fixed;
             top: 0;
-            left: -320px;
+            left: -350px;
             width: 320px;
             height: 100%;
             background: #010813;
             z-index: 2000;
-            padding: 60px 30px;
+            padding: 60px 25px;
             border-right: 2px solid var(--gold);
-            box-shadow: 20px 0 60px rgba(0,0,0,0.9);
+            box-shadow: 30px 0 60px rgba(0,0,0,0.9);
         }
 
         .sidebar.active { left: 0; }
 
-        .sidebar-item {
+        .sidebar-link {
             display: flex;
             align-items: center;
             gap: 20px;
-            color: var(--text-dim);
+            color: var(--text-gray);
             text-decoration: none;
-            padding: 18px;
-            border-radius: 12px;
+            padding: 20px;
+            border-radius: 15px;
             margin-bottom: 15px;
             font-size: 1.1rem;
             background: rgba(255,255,255,0.02);
         }
 
-        .sidebar-item:hover, .sidebar-item.active {
+        .sidebar-link i { color: var(--gold); width: 25px; text-align: center; }
+        .sidebar-link:hover, .sidebar-link.active {
             background: rgba(255, 223, 0, 0.1);
             color: var(--gold);
+            transform: translateX(10px);
         }
-
-        .sidebar-item i { color: var(--gold); width: 25px; text-align: center; }
 
         .overlay {
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             display: none;
             z-index: 1500;
         }
 
-        /* 4. MAIN LAYOUT */
-        .main-wrapper {
-            padding: 25px;
+        /* 4. MAIN CONTENT AREA */
+        .wrapper {
+            padding: 30px 20px;
             max-width: 1400px;
             margin: auto;
         }
 
-        .page-header {
+        .section-title {
             text-align: center;
-            margin-bottom: 40px;
             font-family: 'Cinzel';
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 40px;
+            position: relative;
         }
 
-        /* 5. PROPERTY CARDS */
-        .property-grid {
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+            margin: 15px auto;
+        }
+
+        /* 5. PROPERTY LISTINGS GRID */
+        .listing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
@@ -171,225 +191,204 @@
 
         .card {
             background: var(--card-glass);
-            border-radius: 24px;
+            border-radius: 25px;
             overflow: hidden;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(20px);
             position: relative;
         }
 
         .card:hover {
-            transform: translateY(-12px);
+            transform: translateY(-15px);
             border-color: var(--gold);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
-        .card-image-box {
+        .card-img-container {
+            height: 250px;
             position: relative;
-            height: 240px;
             overflow: hidden;
         }
 
-        .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .card-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .card-badge {
+        .type-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            left: 20px;
             background: var(--gold);
             color: #000;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.75rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.8rem;
             font-weight: 800;
             text-transform: uppercase;
         }
 
-        .card-body { padding: 25px; }
+        .card-info { padding: 25px; }
 
         .card-price {
             font-size: 1.8rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--gold);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .card-title {
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            color: var(--text-main);
-            height: 2.4em;
-            overflow: hidden;
-        }
-
-        .card-location {
+        .card-loc {
+            color: var(--text-gray);
             font-size: 0.9rem;
-            color: var(--text-dim);
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 25px;
         }
 
-        /* 6. BUTTONS */
-        .btn-row {
+        .btn-flex {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
         }
 
-        .action-btn {
+        .btn {
             padding: 14px;
-            border-radius: 12px;
+            border-radius: 15px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             border: none;
             cursor: pointer;
+            font-size: 0.9rem;
         }
 
-        .btn-wa { background: #25D366; color: white; }
-        .btn-call { background: #007bff; color: white; }
-        .btn-del { 
+        .btn-wa { background: var(--whatsapp); color: white; }
+        .btn-call { background: var(--call); color: white; }
+        .btn-danger { 
             grid-column: 1 / -1; 
-            background: var(--danger); 
+            background: #ef4444; 
             color: white; 
             margin-top: 10px;
             opacity: 0.8;
         }
-        .btn-del:hover { opacity: 1; }
 
-        /* 7. ADMIN FORM & DASHBOARD */
-        .admin-section {
-            max-width: 700px;
+        /* 6. TEAM MANAGEMENT SECTION (Customized) */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .team-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+            padding: 40px 30px;
+            border-radius: 30px;
+            border: 1px solid var(--gold);
+            text-align: center;
+            position: relative;
+        }
+
+        .team-card i.main-icon {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .team-name { font-size: 1.5rem; color: var(--gold); font-family: 'Cinzel'; margin-bottom: 5px; }
+        .team-rank { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 25px; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* 7. ADMIN CONTROL PANEL */
+        .admin-box {
+            max-width: 800px;
             margin: 40px auto;
             background: var(--card-glass);
             padding: 40px;
             border-radius: 30px;
-            border: 1px solid var(--gold);
+            border: 2px solid var(--gold);
         }
 
-        .form-group { margin-bottom: 25px; }
+        .form-row { margin-bottom: 25px; }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            color: var(--gold);
-            font-weight: 600;
-        }
+        label { display: block; margin-bottom: 12px; color: var(--gold); font-weight: 600; font-size: 0.9rem; }
 
-        .input-field {
+        .input {
             width: 100%;
-            padding: 16px;
-            background: rgba(0,0,0,0.4);
+            padding: 18px;
+            background: rgba(0,0,0,0.5);
             border: 1px solid #333;
-            border-radius: 14px;
+            border-radius: 15px;
             color: white;
             font-size: 1rem;
             outline: none;
         }
 
-        .input-field:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(255,223,0,0.1); }
+        .input:focus { border-color: var(--gold); }
 
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--gold);
-            color: #000;
-            border: none;
-            border-radius: 14px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 10px 20px rgba(255,223,0,0.2);
-        }
-
-        .submit-btn:active { transform: scale(0.98); }
-
-        /* 8. FILE UPLOAD STYLING */
-        .file-upload-box {
-            border: 2px dashed #444;
-            padding: 30px;
+        .upload-area {
+            border: 2px dashed #555;
+            padding: 40px;
             text-align: center;
-            border-radius: 14px;
+            border-radius: 20px;
             cursor: pointer;
-            position: relative;
         }
 
-        .file-upload-box:hover { border-color: var(--gold); background: rgba(255,223,0,0.02); }
-
-        #img-preview {
+        #preview {
             width: 100%;
-            max-height: 300px;
+            max-height: 400px;
             object-fit: contain;
-            border-radius: 10px;
-            margin-top: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
             display: none;
         }
 
-        /* 9. UTILITIES */
-        .hidden { display: none !important; }
-        .loading-spinner {
-            text-align: center;
-            padding: 100px;
-            font-size: 2rem;
-            color: var(--gold);
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 15px 30px rgba(255,223,0,0.2);
         }
+
+        .submit-btn:hover { transform: scale(0.98); }
+
+        /* 8. LOADING & UTILS */
+        .hidden { display: none !important; }
+        .loader { text-align: center; padding: 100px; font-size: 3rem; color: var(--gold); }
 
         footer {
             text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px;
             border-top: 1px solid rgba(255,255,255,0.05);
-            margin-top: 50px;
-            opacity: 0.6;
+            margin-top: 60px;
+            opacity: 0.5;
             font-size: 0.8rem;
-        }
-
-        /* Mobile Specific Hamburger */
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
-        }
-        .hamburger span {
-            width: 30px;
-            height: 3px;
-            background: var(--gold);
-            border-radius: 10px;
+            line-height: 2;
         }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <div class="disney-logo">A&S REAL ESTATE</div>
-        <div class="dev-tag">Developed by Saqib Zaheer Satti</div>
+    <div id="splash">
+        <div class="splash-logo">A&S MANAGEMENT</div>
+        <div class="dev-credit">Developed by Saqib Zaheer Satti</div>
     </div>
 
     <div class="sidebar" id="sidebar">
-        <div style="text-align: right; margin-bottom: 40px;" onclick="toggleMenu()">
-            <i class="fa-solid fa-xmark" style="font-size: 1.8rem; color: var(--gold); cursor:pointer;"></i>
+        <div style="text-align: right; margin-bottom: 50px;" onclick="toggleMenu()">
+            <i class="fa-solid fa-circle-xmark" style="font-size: 2rem; color: var(--gold); cursor:pointer;"></i>
         </div>
-        <a href="#" class="sidebar-item active" onclick="showPage('home')">
-            <i class="fa-solid fa-house"></i> Home Listings
-        </a>
-        <a href="#" class="sidebar-item" onclick="showPage('admin')">
-            <i class="fa-solid fa-user-shield"></i> Admin Dashboard
-        </a>
-        <a href="https://wa.me/923410585559" class="sidebar-item">
-            <i class="fa-brands fa-whatsapp"></i> Support Chat
-        </a>
+        <a href="#" class="sidebar-link active" onclick="navigate('home')"><i class="fa fa-house"></i> Home Listings</a>
+        <a href="#" class="sidebar-link" onclick="navigate('team')"><i class="fa fa-users"></i> Management Team</a>
+        <a href="#" class="sidebar-link" onclick="navigate('admin')"><i class="fa fa-lock"></i> Admin Control</a>
+        <a href="https://wa.me/923410585559" class="sidebar-link"><i class="fab fa-whatsapp"></i> Instant Support</a>
     </div>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
@@ -397,319 +396,276 @@
         <div class="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
-        <div class="nav-brand" onclick="showPage('home')">A&S MANAGEMENT</div>
-        <div id="theme-icon" style="color:var(--gold); font-size: 1.2rem; cursor:pointer;">
-            <i class="fa-solid fa-shield-halved"></i>
-        </div>
+        <div class="nav-title" onclick="navigate('home')">A&S OFFICIAL</div>
+        <div id="status-dot" style="color:var(--gold); font-size: 1.5rem;"><i class="fa fa-shield-check"></i></div>
     </nav>
 
-    <div class="marquee-container">
-        <marquee behavior="scroll" direction="left" scrollamount="8">
-            <span style="margin-right: 100px;">🔥 LIVE MARKET UPDATE: {{ rates }}</span>
-            <span style="margin-right: 100px;">⭐ A&S REAL ESTATE: ISLAMABAD SECTOR SPECIALISTS</span>
-            <span style="margin-right: 100px;">🏛️ REGISTERED & TRUSTED CONSULTANTS</span>
+    <div class="marquee-bar">
+        <marquee scrollamount="9">
+            🔥 LIVE UPDATES: {{ rates }} | 🏛️ A&S MANAGEMENT: ISLAMABAD SECTOR SPECIALISTS | ⭐ RELIABLE REAL ESTATE CONSULTANTS
         </marquee>
     </div>
 
-    <div class="main-wrapper">
+    <div class="wrapper">
         
         <section id="page-home">
-            <div class="page-header">
-                <h1 style="color: var(--gold); margin-bottom: 10px;">Available Properties</h1>
-                <p style="color: var(--text-dim);">Verified Listings in Islamabad & Rawalpindi</p>
-            </div>
+            <h2 class="section-title">Verified Listings</h2>
+            <div id="loader" class="loader"><i class="fa fa-spinner fa-spin"></i></div>
+            <div class="listing-grid" id="main-grid"></div>
+        </section>
 
-            <div id="loading" class="loading-spinner">
-                <i class="fa-solid fa-circle-notch fa-spin"></i>
-            </div>
-
-            <div class="property-grid" id="main-grid">
+        <section id="page-team" class="hidden">
+            <h2 class="section-title">Our Management</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <i class="fa-solid fa-user-tie main-icon"></i>
+                    <h3 class="team-name">Talha Aftab</h3>
+                    <p class="team-rank">Managing Director</p>
+                    <div class="btn-flex">
+                        <a href="https://wa.me/923410585559" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="tel:+923410585559" class="btn btn-call"><i class="fa fa-phone"></i> Call Now</a>
+                    </div>
                 </div>
+
+                <div class="team-card">
+                    <i class="fa-solid fa-user-tie main-icon"></i>
+                    <h3 class="team-name">Bilal Aftab</h3>
+                    <p class="team-rank">Director Sales</p>
+                    <div class="btn-flex">
+                        <a href="https://wa.me/923005544996" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="tel:+923005544996" class="btn btn-call"><i class="fa fa-phone"></i> Call Now</a>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <i class="fa-solid fa-user-tie main-icon"></i>
+                    <h3 class="team-name">Umer Aftab</h3>
+                    <p class="team-rank">Head of Operations</p>
+                    <div class="btn-flex">
+                        <a href="https://wa.me/923111544996" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="tel:+923111544996" class="btn btn-call"><i class="fa fa-phone"></i> Call Now</a>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="page-admin" class="hidden">
-            <div id="admin-login" class="admin-section">
+            <div id="admin-gate" class="admin-box">
                 <h2 style="text-align:center; color:var(--gold); margin-bottom:30px;">Security Access</h2>
-                <div class="form-group">
-                    <label>Admin Secret PIN</label>
-                    <input type="password" id="login-pin" class="input-field" placeholder="Enter PIN to Unlock">
+                <div class="form-row">
+                    <label>Management Secret PIN</label>
+                    <input type="password" id="login-pin" class="input" placeholder="Enter Secure Code">
                 </div>
-                <button class="submit-btn" onclick="verifyAdmin()">Unlock Control Panel</button>
+                <button class="submit-btn" onclick="verifyAdmin()">Unlock Portal</button>
             </div>
 
-            <div id="admin-controls" class="hidden">
-                
-                <div class="admin-section">
-                    <h3 style="color:var(--gold); margin-bottom:20px;"><i class="fa-solid fa-bullhorn"></i> Update Live Marquee</h3>
-                    <div class="form-group">
-                        <textarea id="marquee-text-input" class="input-field" rows="3" placeholder="Enter new rates or news here..."></textarea>
+            <div id="admin-panel" class="hidden">
+                <div class="admin-box">
+                    <h3 style="color:var(--gold); margin-bottom:25px;">1. Update Live Marquee</h3>
+                    <div class="form-row">
+                        <textarea id="marquee-input" class="input" rows="3" placeholder="Enter latest rates/news here..."></textarea>
                     </div>
-                    <button class="submit-btn" style="background:#444; color:white;" onclick="updateMarquee()">Update Live Stream</button>
+                    <button class="submit-btn" onclick="updateMarquee()">Update Live Streams</button>
                 </div>
 
-                <div class="admin-section">
-                    <h3 style="color:var(--gold); margin-bottom:20px;"><i class="fa-solid fa-plus-circle"></i> Add New Property</h3>
-                    
-                    <div class="form-group">
-                        <label>Property Title</label>
-                        <input type="text" id="p-title" class="input-field" placeholder="e.g. 10 Marla Luxury House">
+                <div class="admin-box">
+                    <h3 style="color:var(--gold); margin-bottom:25px;">2. Add New Listing</h3>
+                    <div class="form-row">
+                        <label>Property Heading</label>
+                        <input type="text" id="p-title" class="input" placeholder="e.g. 5 Marla Plot G-13">
                     </div>
-
-                    <div class="form-group">
-                        <label>Price (PKR)</label>
-                        <input type="text" id="p-price" class="input-field" placeholder="e.g. 4.5 Crore">
+                    <div class="form-row">
+                        <label>Demanded Price</label>
+                        <input type="text" id="p-price" class="input" placeholder="e.g. 1.25 Crore">
                     </div>
-
-                    <div class="form-group">
-                        <label>Select Location</label>
-                        <select id="p-location" class="input-field">
+                    <div class="form-row">
+                        <label>Select Sector/Location</label>
+                        <select id="p-loc" class="input">
                             <option>PHC Officers Residential</option>
                             <option>Bahria Enclave Islamabad</option>
                             <option>Park View City</option>
                             <option>Park Enclave</option>
                             <option>Green Town</option>
                             <option>Margalla Orchard</option>
-                            <option>F-6 / F-7 / F-8 Sectors</option>
-                            <option>G-11 / G-13 / G-14 Sectors</option>
-                            <option>DHA Phase 1-5</option>
+                            <option>F-Series Sectors</option>
+                            <option>G-Series Sectors</option>
+                            <option>DHA Islamabad</option>
                         </select>
                     </div>
-
-                    <div class="form-group">
-                        <label>Listing Category</label>
-                        <select id="p-type" class="input-field">
-                            <option value="For Sale">For Sale</option>
-                            <option value="For Rent">For Rent</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Property Image (Direct Upload)</label>
-                        <div class="file-upload-box" onclick="document.getElementById('p-image').click()">
-                            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--gold);"></i>
-                            <p style="margin-top:10px;">Click to Select Photo</p>
-                            <input type="file" id="p-image" class="hidden" accept="image/*" onchange="previewImage(this)">
-                            <img id="img-preview" src="#" alt="Preview">
+                    <div class="form-row">
+                        <label>Property Photo (Direct Upload)</label>
+                        <div class="upload-area" onclick="document.getElementById('p-file').click()">
+                            <i class="fa fa-cloud-upload" style="font-size: 2.5rem; color: var(--gold);"></i>
+                            <p style="margin-top:10px;">Select from Gallery/Camera</p>
+                            <input type="file" id="p-file" class="hidden" accept="image/*" onchange="handleImage(this)">
+                            <img id="preview" src="#">
                         </div>
                     </div>
-
-                    <button class="submit-btn" onclick="publishProperty()">Publish to Live Cloud</button>
+                    <button class="submit-btn" onclick="uploadProperty()">Publish Live Listing</button>
                 </div>
 
-                <div class="admin-section">
-                    <h3 style="color:var(--gold); margin-bottom:20px;"><i class="fa-solid fa-key"></i> Change Admin Password</h3>
-                    <div class="form-group">
-                        <input type="password" id="new-secret-pin" class="input-field" placeholder="Enter New PIN">
+                <div class="admin-box">
+                    <h3 style="color:var(--gold); margin-bottom:25px;">3. Security Settings</h3>
+                    <div class="form-row">
+                        <label>Set New PIN Code</label>
+                        <input type="password" id="new-pin" class="input" placeholder="New Secret PIN">
                     </div>
-                    <button class="submit-btn" style="background:#222; color:white; border:1px solid #444;" onclick="changePin()">Save New Password</button>
+                    <button class="submit-btn" style="background:#333; color:white;" onclick="updatePin()">Save New Password</button>
                 </div>
-
             </div>
         </section>
 
     </div>
 
     <footer>
-        <div style="font-family:'Cinzel'; color:var(--gold); font-size:1.4rem; margin-bottom:15px;">A&S MANAGEMENT</div>
-        <p>Official Real Estate Partner in Islamabad & Rawalpindi</p>
-        <p style="margin-top:20px;">© 2026 Developed by Saqib Zaheer Satti. All Rights Reserved.</p>
+        <div style="font-family:'Cinzel'; color:var(--gold); font-size:1.5rem;">A&S MANAGEMENT</div>
+        <p>Premium Real Estate Services in Islamabad & Rawalpindi</p>
+        <p>© 2026 Developed by Saqib Zaheer Satti. All rights reserved.</p>
     </footer>
 
     <script>
-        // Global State
         let allListings = [];
-        let base64Image = "";
-        let isUserAdmin = false;
+        let base64String = "";
+        let isAdminLoggedIn = false;
 
-        // --- UI TOGGLES ---
+        // UI NAVIGATION
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
             const overlay = document.getElementById('overlay');
             overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
         }
 
-        function showPage(pageId) {
-            document.querySelectorAll('section').forEach(p => p.classList.add('hidden'));
-            document.getElementById('page-' + pageId).classList.remove('hidden');
-            
-            // Highlight sidebar item
-            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-            if(pageId === 'home') document.querySelectorAll('.sidebar-item')[0].classList.add('active');
-            if(pageId === 'admin') document.querySelectorAll('.sidebar-item')[1].classList.add('active');
-            
+        function navigate(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('page-' + id).classList.remove('hidden');
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
             if(window.innerWidth < 800) toggleMenu();
             window.scrollTo(0,0);
         }
 
-        // --- IMAGE HANDLING ---
-        function previewImage(input) {
-            const preview = document.getElementById('img-preview');
+        // IMAGE PREVIEW
+        function handleImage(input) {
+            const preview = document.getElementById('preview');
             const file = input.files[0];
             const reader = new FileReader();
-
-            reader.onloadend = function() {
+            reader.onloadend = () => {
                 preview.src = reader.result;
                 preview.style.display = 'block';
-                base64Image = reader.result; // Store for upload
+                base64String = reader.result;
             }
-
-            if (file) {
-                reader.readAsDataURL(file);
-            }
+            if(file) reader.readAsDataURL(file);
         }
 
-        // --- ADMIN AUTH ---
+        // ADMIN ACCESS
         async function verifyAdmin() {
-            const enteredPin = document.getElementById('login-pin').value;
+            const pin = document.getElementById('login-pin').value;
             const res = await fetch('/get_pin');
             const data = await res.json();
-
-            if(enteredPin === data.pin) {
-                isUserAdmin = true;
-                document.getElementById('admin-login').classList.add('hidden');
-                document.getElementById('admin-controls').classList.remove('hidden');
-                refreshGrids(); // Refresh to show delete buttons
-            } else {
-                alert("ACCESS DENIED: Invalid Security PIN");
-            }
+            if(pin === data.pin) {
+                isAdminLoggedIn = true;
+                document.getElementById('admin-gate').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                refreshData();
+            } else { alert("Error: Invalid PIN Code!"); }
         }
 
-        // --- CLOUD OPERATIONS ---
-        async function refreshGrids() {
-            document.getElementById('loading').classList.remove('hidden');
-            try {
-                const res = await fetch('/get_properties');
-                allListings = await res.json();
-                renderProperties();
-            } catch (err) {
-                console.error("Fetch Error:", err);
-            }
-            document.getElementById('loading').classList.add('hidden');
+        // CLOUD OPERATIONS
+        async function refreshData() {
+            document.getElementById('loader').classList.remove('hidden');
+            const res = await fetch('/get_properties');
+            allListings = await res.json();
+            renderGrids();
+            document.getElementById('loader').classList.add('hidden');
         }
 
-        function renderProperties() {
+        function renderGrids() {
             const grid = document.getElementById('main-grid');
             if(allListings.length === 0) {
-                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:50px; opacity:0.5;">No listings found in Cloud Database.</p>`;
+                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:50px; opacity:0.5;">No listings available in cloud.</p>`;
                 return;
             }
 
-            grid.innerHTML = allListings.map(item => `
+            grid.innerHTML = allListings.map(p => `
                 <div class="card">
-                    <div class="card-image-box">
-                        <div class="card-badge">${item.type || 'For Sale'}</div>
-                        <img src="${item.img || 'https://via.placeholder.com/600x400'}" class="card-img" alt="Property">
+                    <div class="card-img-container">
+                        <div class="type-badge">Verified</div>
+                        <img src="${p.img}" class="card-img">
                     </div>
-                    <div class="card-body">
-                        <div class="card-price">PKR ${item.price}</div>
-                        <h3 class="card-title">${item.title}</h3>
-                        <div class="card-location">
-                            <i class="fa-solid fa-location-dot" style="color:var(--gold)"></i> ${item.area}
-                        </div>
-                        <div class="btn-row">
-                            <a href="https://wa.me/923410585559?text=Interested in: ${item.title}" class="action-btn btn-wa">
-                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
-                            </a>
-                            <a href="tel:+923410585559" class="action-btn btn-call">
-                                <i class="fa-solid fa-phone"></i> Call
-                            </a>
-                            ${isUserAdmin ? `
-                                <button class="action-btn btn-del" onclick="deleteListing('${item._id}')">
-                                    <i class="fa-solid fa-trash-can"></i> REMOVE LISTING
-                                </button>
-                            ` : ''}
+                    <div class="card-info">
+                        <div class="card-price">PKR ${p.price}</div>
+                        <h3 style="margin-bottom:10px;">${p.title}</h3>
+                        <div class="card-loc"><i class="fa fa-map-marker"></i> ${p.area}</div>
+                        <div class="btn-flex">
+                            <a href="https://wa.me/923410585559?text=Inquiry: ${p.title}" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="tel:+923410585559" class="btn btn-call"><i class="fa fa-phone"></i> Call</a>
+                            ${isAdminLoggedIn ? `<button class="btn btn-danger" onclick="deleteItem('${p._id}')">DELETE PROPERTY</button>` : ''}
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function publishProperty() {
-            const title = document.getElementById('p-title').value;
-            const price = document.getElementById('p-price').value;
-            const area = document.getElementById('p-location').value;
-            const type = document.getElementById('p-type').value;
-
-            if(!title || !price || !base64Image) {
-                alert("Please fill all fields and upload a photo.");
-                return;
-            }
-
+        async function uploadProperty() {
+            if(!base64String) return alert("Please select a photo first!");
             const btn = event.target;
-            btn.innerText = "PUBLISHING...";
+            btn.innerText = "UPLOADING TO CLOUD...";
             btn.disabled = true;
+
+            const payload = {
+                title: document.getElementById('p-title').value,
+                price: document.getElementById('p-price').value,
+                area: document.getElementById('p-loc').value,
+                img: base64String
+            };
 
             const res = await fetch('/save_property', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    title: title,
-                    price: price,
-                    area: area,
-                    type: type,
-                    img: base64Image
-                })
+                body: JSON.stringify(payload)
             });
 
-            if(res.ok) {
-                alert("Successfully published to Cloud!");
-                location.reload();
-            } else {
-                alert("Error saving property.");
-                btn.disabled = false;
-                btn.innerText = "Publish to Live Cloud";
-            }
+            if(res.ok) { alert("Successfully Published!"); location.reload(); }
         }
 
-        async function deleteListing(id) {
-            if(!confirm("Are you sure you want to delete this property forever?")) return;
-
-            const res = await fetch('/delete_property', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({id: id})
-            });
-
-            if(res.ok) {
-                refreshGrids();
+        async function deleteItem(id) {
+            if(confirm("Confirm Delete Listing?")) {
+                await fetch('/delete_property', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id: id})
+                });
+                refreshData();
             }
         }
 
         async function updateMarquee() {
-            const newText = document.getElementById('marquee-text-input').value;
-            if(!newText) return alert("Please enter some text");
-
+            const txt = document.getElementById('marquee-input').value;
             await fetch('/update_settings', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({marquee: newText})
+                body: JSON.stringify({marquee: txt})
             });
-            alert("Live Marquee Updated!");
-            location.reload();
+            alert("Live Marquee Updated!"); location.reload();
         }
 
-        async function changePin() {
-            const newPin = document.getElementById('new-secret-pin').value;
-            if(!newPin) return alert("Enter a new PIN");
-
+        async function updatePin() {
+            const pin = document.getElementById('new-pin').value;
             await fetch('/update_settings', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({pin: newPin})
+                body: JSON.stringify({pin: pin})
             });
-            alert("Security PIN Updated Successfully!");
+            alert("PIN Updated!");
         }
 
-        // Initialize
+        // STARTUP
         window.onload = () => {
-            // Remove Splash Screen after 4 seconds
             setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
+                const splash = document.getElementById('splash');
                 splash.style.opacity = '0';
                 setTimeout(() => splash.remove(), 1000);
-            }, 4000);
-
-            refreshGrids();
+            }, 3500);
+            refreshData();
         };
     </script>
 </body>
