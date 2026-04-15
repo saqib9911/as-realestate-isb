@@ -1,70 +1,65 @@
-from flask import Flask, render_template, send_from_directory, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 import json
+from pymongo import MongoClient
 
-# Vercel ke liye folders ki configuration
-app = Flask(__name__, 
-            template_folder='templates', 
-            static_folder='static')
+app = Flask(__name__)
 
-DATA_FILE = 'properties.json'
+# --- MONGODB CONNECTION ---
+# Yahan <DsUTBwyxsi5sdYf2> ki jagah apna asli password likhein
+MONGO_URI = "mongodb+srv://saqibzaheersattirocklight_db_user:<db_password>@cluster0.vvzewi4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
-# Ensure properties.json exists for the app to read
-if not os.path.exists(DATA_FILE):
-    try:
-        with open(DATA_FILE, 'w') as f:
-            json.dump([], f)
-    except:
-        pass
+try:
+    client = MongoClient(MONGO_URI)
+    db = client['realestate_db'] # Database ka naam
+    collection = db['properties'] # Collection ka naam
+    # Connection test karne ke liye
+    client.admin.command('ping')
+    print("MongoDB Connected Successfully!")
+except Exception as e:
+    print(f"MongoDB Connection Error: {e}")
 
 @app.route('/')
 def index():
-    # Flask auto-detects 'templates/index.html'
     return render_template('index.html')
 
 @app.route('/get_properties')
 def get_properties():
     try:
-        if os.path.exists(DATA_FILE):
-            with open(DATA_FILE, 'r') as f:
-                data = json.load(f)
-            return jsonify(data)
-        return jsonify([])
+        # MongoDB se latest properties nikalna (ulta order mein)
+        props = list(collection.find({}, {'_id': 0}).sort('_id', -1))
+        return jsonify(props)
     except Exception as e:
         return jsonify([])
 
 @app.route('/save_property', methods=['POST'])
 def save_property():
-    # Vercel is read-only, so saving will only work locally or temporarily
     try:
-        title = request.form.get('title')
-        price = request.form.get('price')
-        # Placeholder image as Vercel won't store permanent uploads
-        img_url = "https://via.placeholder.com/300" 
-        
-        new_listing = {
-            "title": title, 
-            "price": price, 
+        new_data = {
+            "title": request.form.get('title'),
+            "price": request.form.get('price'),
             "area": request.form.get('area'),
             "type": request.form.get('type'),
             "map": request.form.get('map'),
             "video": request.form.get('video'),
-            "img": img_url
+            "img": "https://via.placeholder.com/300" # Placeholder kyunke Vercel file save nahi karta
         }
-        return jsonify({"status": "success", "message": "Property added (Temporary)"})
+        # MongoDB mein data insert karna
+        collection.insert_one(new_data)
+        return jsonify({"status": "success"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-# PWA Support: In files ko main folder se serve karne ke liye
+# PWA Support
 @app.route('/sw.js')
-def serve_sw():
+def sw():
     return send_from_directory(os.getcwd(), 'sw.js')
 
 @app.route('/manifest.json')
-def serve_manifest():
+def manifest():
     return send_from_directory(os.getcwd(), 'manifest.json')
 
-# Critical for Vercel: expose the app object
+# Vercel integration
 app = app
 
 if __name__ == '__main__':
