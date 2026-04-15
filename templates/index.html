@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A&S Real Estate | Islamabad & Rawalpindi</title>
+    <title>A&S Real Estate | Islamabad Specialist</title>
     
-    <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
+        /* --- PROFESSIONAL CSS STYLING --- */
         :root {
-            --primary: #00ffcc;
-            --bg: #0f172a;
-            --glass: rgba(255, 255, 255, 0.03);
+            --primary-color: #00ffcc;
+            --secondary-color: #0ea5e9;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg);
+            background-color: var(--bg-dark);
             background-image: radial-gradient(circle at top right, #1e293b, #0f172a);
-            color: white;
+            color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* 1. Live Rates Marquee */
-        .top-marquee {
+        /* 1. Live Rates Marquee Bar */
+        .marquee-container {
             background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border);
-            color: var(--primary);
+            color: var(--primary-color);
             padding: 12px 0;
             font-weight: 600;
             font-size: 0.9rem;
@@ -44,43 +50,103 @@
             z-index: 2000;
         }
 
-        /* 2. Glass Navbar */
+        /* 2. Glassmorphism Navigation */
         nav {
-            padding: 20px;
-            background: var(--glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 25px;
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
-            text-align: center;
+            position: relative;
+            z-index: 1001;
         }
 
-        nav h1 {
-            font-size: 1.4rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #fff, var(--primary));
+        .nav-logo h1 {
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, var(--primary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* 3. Search & Filters Section */
-        .filter-section {
-            padding: 20px;
+        .menu-icon, .admin-icon {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* 3. Hamburger Side Menu */
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #1e293b;
+            box-shadow: 15px 0 30px rgba(0,0,0,0.5);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 3000;
+            padding: 30px 20px;
+        }
+
+        .side-drawer.active {
+            left: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+        }
+
+        .drawer-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .drawer-links a:hover {
+            background: var(--glass-bg);
+            color: var(--primary-color);
+        }
+
+        /* 4. Search & Islamabad Sector Filters */
+        .search-section {
+            padding: 25px 20px;
+        }
+
+        .filter-wrapper {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .search-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        select, input {
+        .input-group {
+            position: relative;
             width: 100%;
-            padding: 15px;
-            border-radius: 12px;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            background: var(--glass);
             color: white;
             font-size: 1rem;
             outline: none;
@@ -88,86 +154,81 @@
         }
 
         select:focus, input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
         }
 
-        /* 4. Property Grid */
-        .property-container {
-            padding: 15px;
+        /* 5. Property Grid & Cards */
+        .property-grid {
+            padding: 20px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-            gap: 20px;
+            gap: 25px;
         }
 
         .property-card {
-            background: var(--glass);
+            background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            border-radius: 25px;
             overflow: hidden;
             backdrop-filter: blur(10px);
             transition: 0.4s;
+        }
+
+        .card-image-box {
             position: relative;
-        }
-
-        .property-card:active {
-            transform: scale(0.98);
-        }
-
-        .card-img {
+            height: 230px;
             width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-bottom: 1px solid var(--glass-border);
         }
 
-        .card-content {
+        .card-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--primary-color);
+            color: #000;
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .card-details {
             padding: 20px;
         }
 
-        .badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--primary);
-            color: #000;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .price-text {
+            font-size: 1.6rem;
             font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
         }
 
-        .price-tag {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #f1f5f9;
-        }
-
-        .details {
+        .location-info {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 15px;
             display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-bottom: 20px;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn-group {
+        .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
         .btn {
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
             text-decoration: none;
             font-weight: 600;
@@ -175,143 +236,232 @@
             transition: 0.3s;
         }
 
-        .btn-map { background: rgba(0, 255, 204, 0.1); color: var(--primary); border: 1px solid var(--primary); }
-        .btn-video { background: #1e293b; color: white; border: 1px solid var(--glass-border); }
+        .btn-maps { background: var(--primary-color); color: #000; }
+        .btn-video { background: #334155; color: white; border: 1px solid var(--glass-border); }
 
-        /* 5. Floating Action Button */
-        .fab {
+        /* 6. Admin Floating Modal */
+        #adminOverlay {
+            display: none;
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--primary);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0, 255, 204, 0.4);
-            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 5000;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .admin-modal {
+            background: #1e293b;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 25px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
             cursor: pointer;
         }
 
-        /* 6. Footer */
+        /* Footer */
         footer {
             text-align: center;
-            padding: 50px 20px;
+            padding: 60px 20px;
+            color: var(--text-dim);
             font-size: 0.8rem;
-            color: #64748b;
         }
 
-        /* Responsive Desktop */
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .property-card { animation: fadeIn 0.6s ease forwards; }
+
+        /* Tablet/Desktop View */
         @media (min-width: 768px) {
-            .property-container {
+            .property-grid {
                 grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
                 padding: 40px;
             }
-            .filter-section {
-                flex-direction: row;
-                max-width: 1000px;
-                margin: 0 auto;
-            }
+            .filter-wrapper { flex-direction: row; }
         }
     </style>
 </head>
 <body>
 
-    <div class="top-marquee">
+    <div class="marquee-container">
         <marquee behavior="scroll" direction="left" scrollamount="6">
-            <span>🔥 LIVE UPDATES: {{ rates }}</span> — Developed by Saqib Zaheer Satti (A&S Management Team)
+            <span style="color: #ff3e3e;">● LIVE UPDATES:</span> {{ rates }} — Developed by Saqib Zaheer Satti (A&S Management)
         </marquee>
     </div>
 
     <nav>
-        <h1>A&S Management</h1>
-        <p style="font-size: 0.6rem; color: #94a3b8; letter-spacing: 2px;">REAL ESTATE & NAVIGATION SPECIALIST</p>
+        <div class="menu-icon" onclick="toggleDrawer()"><i class="fas fa-bars-staggered"></i></div>
+        <div class="nav-logo"><h1>A&S MANAGEMENT</h1></div>
+        <div class="admin-icon" onclick="openAdmin()"><i class="fas fa-circle-plus"></i></div>
     </nav>
 
-    <div class="filter-section">
-        <div class="search-group">
-            <select id="sectorSelect">
-                <option value="all">All Sectors (Islamabad/Pindi)</option>
-                <optgroup label="Islamabad">
+    <div class="side-drawer" id="sideDrawer">
+        <div class="drawer-header">
+            <h3>Menu</h3>
+            <div onclick="toggleDrawer()"><i class="fas fa-xmark"></i></div>
+        </div>
+        <div class="drawer-links">
+            <a href="/"><i class="fas fa-house"></i> Home</a>
+            <a href="#" onclick="openAdmin(); toggleDrawer();"><i class="fas fa-plus-circle"></i> Add Property</a>
+            <a href="/admin_rates"><i class="fas fa-chart-line"></i> Update Live Rates</a>
+            <a href="https://wa.me/923000000000" target="_blank"><i class="fab fa-whatsapp"></i> Contact Support</a>
+            <a href="#"><i class="fas fa-gear"></i> Settings</a>
+        </div>
+        <p style="position: absolute; bottom: 20px; font-size: 0.6rem; color: var(--text-dim);">Version 3.0.1 Cloud Enabled</p>
+    </div>
+
+    <section class="search-section">
+        <div class="filter-wrapper">
+            <div class="input-group">
+                <select id="sectorSelect">
+                    <option value="all">All Islamabad Sectors</option>
                     <option value="G-6">G-6 (Aabpara)</option>
-                    <option value="G-7">G-7 (Sectors)</option>
-                    <option value="F-6">F-6 (Markaz)</option>
+                    <option value="G-11">G-11 (Markaz)</option>
+                    <option value="F-6">F-6 (Main)</option>
                     <option value="F-7">F-7 (Jinnah Super)</option>
-                    <option value="F-8">F-8 (Kachehri)</option>
+                    <option value="F-10">F-10 (Markaz)</option>
                     <option value="E-7">E-7 (Margalla)</option>
                     <option value="Gulberg">Gulberg Greens</option>
                     <option value="DHA">DHA Islamabad</option>
-                </optgroup>
-                <optgroup label="Rawalpindi">
-                    <option value="Bahria">Bahria Town (All Phases)</option>
-                    <option value="Saddar">Saddar Rawalpindi</option>
-                    <option value="Adyala">Adyala Road</option>
-                </optgroup>
-            </select>
+                    <option value="Bahria">Bahria Town</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="text" id="priceSearch" placeholder="Max Price (e.g. 1 Crore)">
+            </div>
         </div>
-        <input type="text" id="priceInput" placeholder="Max Price (e.g. 50,000)">
-    </div>
+    </section>
 
-    <div class="property-container" id="propertyList">
-        <div style="text-align: center; grid-column: 1/-1; padding: 50px;">
-            <p style="opacity: 0.5;">Connecting to MongoDB Cloud Database...</p>
+    <main class="property-grid" id="mainGrid">
+        <div style="text-align: center; grid-column: 1/-1; padding: 100px 0;">
+            <i class="fas fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--primary-color);"></i>
+            <p style="margin-top: 15px; color: var(--text-dim);">Fetching properties from Cloud...</p>
+        </div>
+    </main>
+
+    <div id="adminOverlay">
+        <div class="admin-modal">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+                <h3>Add New Property</h3>
+                <div onclick="closeAdmin()" style="cursor: pointer;"><i class="fas fa-xmark"></i></div>
+            </div>
+            <form id="addPropertyForm">
+                <div class="form-control"><input type="text" name="title" placeholder="Title (e.g. 1 Kanal House)" required></div>
+                <div class="form-control"><input type="text" name="price" placeholder="Price (e.g. 5.5 Crore)" required></div>
+                <div class="form-control"><input type="text" name="area" placeholder="Sector / Size (e.g. G-11/3)" required></div>
+                <div class="form-control"><input type="text" name="map" placeholder="Google Maps Link"></div>
+                <div class="form-control"><input type="text" name="video" placeholder="Video Tour Link"></div>
+                <button type="submit" class="submit-btn">SAVE PERMANENTLY</button>
+            </form>
         </div>
     </div>
 
     <footer>
-        <p>A&S Management & Solutions</p>
+        <p>A&S Management Team | Islamabad Specialists</p>
         <p>Managed by: Talha & Saqib Zaheer Satti</p>
-        <p style="margin-top: 10px;">© 2026 Chikass Weather & Real Estate Integrated</p>
+        <div style="margin-top: 20px; opacity: 0.5;">© 2026 Developed by Saqib Zaheer Satti</div>
     </footer>
 
     <script>
-        async function fetchProperties() {
+        // Toggle Hamburger Menu
+        function toggleDrawer() {
+            document.getElementById('sideDrawer').classList.toggle('active');
+        }
+
+        // Admin Modal Controls
+        function openAdmin() { document.getElementById('adminOverlay').style.display = 'block'; }
+        function closeAdmin() { document.getElementById('adminOverlay').style.display = 'none'; }
+
+        // Fetch & Render Properties from MongoDB
+        async function fetchListings() {
             try {
                 const response = await fetch('/get_properties');
-                const properties = await response.json();
-                renderProperties(properties);
-            } catch (error) {
-                console.error("Error loading properties:", error);
+                const data = await response.json();
+                renderUI(data);
+            } catch (err) {
+                console.error("Cloud connection failed");
             }
         }
 
-        function renderProperties(data) {
-            const list = document.getElementById('propertyList');
-            if (data.length === 0) {
-                list.innerHTML = `<p style="text-align:center; grid-column:1/-1;">No properties found in this sector.</p>`;
+        function renderUI(properties) {
+            const grid = document.getElementById('mainGrid');
+            if (properties.length === 0) {
+                grid.innerHTML = `<div style="text-align:center; grid-column:1/-1; color:var(--text-dim);">No properties found.</div>`;
                 return;
             }
 
-            list.innerHTML = data.map(p => `
+            grid.innerHTML = properties.map(p => `
                 <div class="property-card">
-                    <span class="badge">${p.type || 'For Sale'}</span>
-                    <img src="${p.img || 'https://via.placeholder.com/400x250'}" class="card-img" alt="property">
-                    <div class="card-content">
-                        <div class="price-tag">PKR ${p.price}</div>
-                        <div class="title">${p.title}</div>
-                        <div class="details">
-                            <span>📏 ${p.area || 'N/A'}</span>
-                            <span>📍 ${p.area.split(',')[0]}</span>
+                    <div class="card-image-box">
+                        <span class="status-badge">Premium</span>
+                        <img src="https://via.placeholder.com/600x400/1e293b/00ffcc?text=A%26S+Real+Estate" alt="Property">
+                    </div>
+                    <div class="card-details">
+                        <div class="price-text">PKR ${p.price}</div>
+                        <div class="title" style="font-weight: 600; font-size: 1.1rem; margin-bottom: 5px;">${p.title}</div>
+                        <div class="location-info">
+                            <i class="fas fa-location-dot"></i> ${p.area}
                         </div>
-                        <div class="btn-group">
-                            <a href="${p.map}" target="_blank" class="btn btn-map">Google Map</a>
-                            <a href="${p.video}" target="_blank" class="btn btn-video">Video Tour</a>
+                        <div class="action-buttons">
+                            <a href="${p.map}" target="_blank" class="btn btn-maps">VIEW MAP</a>
+                            <a href="${p.video}" target="_blank" class="btn btn-video">VIDEO TOUR</a>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Initialize App
-        window.onload = fetchProperties;
+        // Form Submission to MongoDB
+        document.getElementById('addPropertyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const btn = e.target.querySelector('button');
+            
+            btn.innerText = "SAVING...";
+            btn.disabled = true;
 
-        // PWA Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
+            const res = await fetch('/save_property', {
+                method: 'POST',
+                body: formData
             });
+
+            if (res.ok) {
+                alert("Property saved to cloud permanently!");
+                location.reload();
+            } else {
+                alert("Error saving property.");
+                btn.innerText = "SAVE PERMANENTLY";
+                btn.disabled = false;
+            }
+        });
+
+        // Initialize App
+        window.onload = fetchListings;
+
+        // PWA Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
         }
     </script>
 </body>
