@@ -1,0 +1,16 @@
+{
+  "name": "A&S RealEstate Isb",
+  "short_name": "A&S RealEstate",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050a14",
+  "theme_color": "#ffdf00",
+  "description": "Premium Real Estate Portal for Islamabad Twin Cities",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/fluency/512/home.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
