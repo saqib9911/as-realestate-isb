@@ -742,6 +742,33 @@
             }, 3000);
             refreshDataFromCloud();
         });
+
+        // <<< YAHAN PAR PASTE KAREIN >>>
+        async function updateSystemPin() {
+            const newPin = document.getElementById('new-master-pin').value;
+            if(!newPin) { alert("PIN enter karein!"); return; }
+            
+            if(!confirm("Kya aap Master PIN badalna chahte hain?")) return;
+
+            const res = await fetch('/change_admin_pin', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ new_pin: newPin })
+            });
+
+            const result = await res.json();
+            if(result.status === "success") {
+                alert("Zabardast! Naya Master PIN set ho gaya.");
+                location.reload(); 
+            } else {
+                alert("Error: " + result.msg);
+            }
+        }
+        // <<< PASTE KHATAM >>>
+
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
