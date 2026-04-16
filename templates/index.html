@@ -655,9 +655,10 @@
                         <p style="color:var(--text-muted); margin-bottom:30px;"><i class="fa-solid fa-location-dot" style="color:var(--lux-gold);"></i> ${item.area}</p>
                         
                         <div class="contact-row" style="justify-content:flex-start;">
-                            <a href="https://wa.me/+92 311 1544996?text=Interested in: ${item.title}" class="action-btn btn-wa">
-                                <i class="fab fa-whatsapp"></i> Inquire
-                            </a>
+    <a href="https://wa.me/923111544996?text=Assalam-o-Alaikum Umer Bhai, I am interested in: ${item.title}" class="action-btn btn-wa">
+        <i class="fab fa-whatsapp"></i> Inquire
+    </a>
+</div>
                             ${item.yt_link ? `<a href="${item.yt_link}" target="_blank" class="action-btn btn-call" style="flex:0; width:60px;"><i class="fab fa-youtube"></i></a>` : ''}
                             ${masterAccess ? `<button onclick="deleteCloudRecord('${item._id}')" style="background:#da3633; border:none; color:white; padding:15px; border-radius:15px; cursor:pointer;"><i class="fa fa-trash"></i></button>` : ''}
                         </div>
