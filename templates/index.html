@@ -4,704 +4,662 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#010409">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>A&S RealEstate Isb | Official Premium Portal</title>
+    <title>A&S RealEstate Isb | Premium Management Portal</title>
     
     <link rel="manifest" href="/manifest.json">
-    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/602/602273.png">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================================
-           A&S RealEstate Isb - CORE STYLESHEET (Long-Form)
-           Theme: Obsidian Dark & Solar Gold
+           CORE STYLING ENGINE - A&S LUXURY BLACK & GOLD THEME
            ========================================================== */
 
         :root {
-            --solar-gold: #ffdf00;
-            --gold-glow: rgba(255, 223, 0, 0.45);
-            --deep-obsidian: #010409;
-            --glass-base: rgba(13, 17, 23, 0.7);
-            --glass-border: rgba(255, 223, 0, 0.2);
-            --text-primary: #f0f6fc;
+            --lux-gold: #ffdf00;
+            --lux-gold-dim: rgba(255, 223, 0, 0.4);
+            --dark-obsidian: #010409;
+            --glass-panel: rgba(13, 17, 23, 0.95);
+            --border-glow: rgba(255, 223, 0, 0.25);
+            --text-silver: #e6edf3;
             --text-muted: #8b949e;
-            --shadow-lux: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            --safe-area-top: env(safe-area-inset-top);
+            --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Base Reset & Smoothness */
+        /* RESET & BASE LAYOUT */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
-            height: 100%;
-            background-color: var(--deep-obsidian);
-            color: var(--text-primary);
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
+        body {
+            background-color: var(--dark-obsidian);
+            color: var(--text-silver);
             overflow-x: hidden;
+            line-height: 1.7;
         }
 
-        /* --- 1. LUXURY DISNEY SPLASH (FULLY RESPONSIVE) --- */
+        /* --- 1. LUXURY SPLASH SCREEN ANIMATION --- */
         #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #0d1117 0%, #000 100%);
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 99999;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20000;
+            transition: opacity 1.5s ease-out;
         }
 
-        .splash-title-box {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .splash-main-text {
+        .splash-branding {
             font-family: 'Cinzel', serif;
-            color: var(--solar-gold);
-            /* Clamp logic prevents overflow on small screens */
-            font-size: clamp(1.4rem, 8vw, 4.2rem);
+            color: var(--lux-gold);
+            font-size: clamp(1.8rem, 10vw, 4.5rem);
+            letter-spacing: 15px;
             font-weight: 900;
-            letter-spacing: clamp(5px, 2vw, 15px);
-            text-shadow: 0 0 40px var(--gold-glow);
-            animation: textReveal 3.5s ease-in-out forwards;
-            white-space: nowrap;
+            text-shadow: 0 0 50px var(--lux-gold-dim);
+            text-align: center;
+            padding: 0 30px;
+            animation: textFocus 2s ease-in-out forwards;
         }
 
-        .splash-sub-text {
-            margin-top: 30px;
-            font-size: clamp(0.7rem, 2vw, 1rem);
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            color: white;
-            opacity: 0.5;
-            animation: subFadeIn 2s ease-out 1s forwards;
-            opacity: 0;
+        @keyframes textFocus {
+            0% { filter: blur(12px); opacity: 0; letter-spacing: 30px; }
+            100% { filter: blur(0px); opacity: 1; letter-spacing: 15px; }
         }
 
-        @keyframes textReveal {
-            0% { opacity: 0; transform: scale(0.8) translateY(20px); filter: blur(15px); }
-            50% { opacity: 1; transform: scale(1.05); filter: blur(0px); }
-            100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+        .splash-loader-bar {
+            width: 250px;
+            height: 3px;
+            background: #111;
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
         }
 
-        @keyframes subFadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 0.5; transform: translateY(0); }
+        .splash-loader-bar::after {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 100%;
+            background: var(--lux-gold);
+            animation: luxLoad 2.5s infinite ease-in-out;
+            box-shadow: 0 0 15px var(--lux-gold);
         }
 
-        /* --- 2. PREMIUM NAVIGATION --- */
+        @keyframes luxLoad {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* --- 2. HEADER & HAMBURGER NAVIGATION --- */
         header {
-            background-color: #0d1117;
-            height: 85px;
+            height: 90px;
+            background: #0d1117;
+            border-bottom: 3px solid var(--lux-gold);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 clamp(20px, 5vw, 60px);
+            padding: 0 clamp(20px, 6vw, 80px);
             position: sticky;
             top: 0;
-            z-index: 5000;
-            border-bottom: 2px solid var(--solar-gold);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            z-index: 10000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
 
-        .brand-identity {
+        .header-logo {
             font-family: 'Cinzel', serif;
-            color: var(--solar-gold);
-            font-size: clamp(1rem, 4vw, 1.8rem);
+            color: var(--lux-gold);
+            font-size: clamp(1.2rem, 5vw, 2.2rem);
             font-weight: 900;
             cursor: pointer;
-            user-select: none;
-            text-shadow: 0 0 10px rgba(255, 223, 0, 0.3);
+            text-shadow: 0 0 15px rgba(255, 223, 0, 0.4);
+            text-decoration: none;
         }
 
-        .pwa-install-trigger {
-            background: var(--solar-gold);
-            color: #000;
-            padding: 10px 22px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.8rem;
-            display: none; /* Controlled by JS */
+        .hamburger-icon {
+            font-size: 2.2rem;
+            color: var(--lux-gold);
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 0 15px var(--gold-glow);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            transition: var(--transition-smooth);
+            z-index: 11000;
         }
 
-        /* --- 3. LIVE BROADCAST MARQUEE (IMAGES + TEXT) --- */
-        .scrolling-news-wrapper {
-            background: linear-gradient(90deg, #000 0%, #111 50%, #000 100%);
-            padding: 15px 0;
-            border-bottom: 1px solid var(--glass-border);
+        .hamburger-icon:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: scale(1.1);
+        }
+
+        /* SIDE DRAWER NAVIGATION */
+        .side-nav-drawer {
+            position: fixed;
+            top: 0;
+            right: -360px;
+            width: 360px;
+            height: 100vh;
+            background: #0d1117;
+            border-left: 3px solid var(--lux-gold);
+            z-index: 10500;
+            transition: var(--transition-smooth);
+            padding: 140px 50px;
+            box-shadow: -40px 0 80px rgba(0,0,0,0.95);
+        }
+
+        .side-nav-drawer.active { right: 0; }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 45px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #1c2128;
+            transition: 0.4s;
+        }
+
+        .drawer-item:hover {
+            color: var(--lux-gold);
+            padding-left: 15px;
+            border-bottom-color: var(--lux-gold);
+        }
+
+        .drawer-item i { color: var(--lux-gold); font-size: 1.5rem; width: 30px; }
+
+        /* --- 3. DYNAMIC MARQUEE SYSTEM (TEXT + IMAGES) --- */
+        .marquee-container {
+            background: linear-gradient(90deg, #000 0%, #0d1117 50%, #000 100%);
+            padding: 22px 0;
+            border-bottom: 1px solid var(--border-glow);
             overflow: hidden;
-            display: flex;
-            align-items: center;
         }
 
-        .marquee-inner {
+        .marquee-content-box {
             display: flex;
             align-items: center;
-            gap: 100px;
+            gap: 120px;
         }
 
-        .marquee-news-text {
-            color: var(--solar-gold);
+        .marquee-text-node {
+            color: var(--lux-gold);
             font-weight: 900;
-            font-size: 1.1rem;
             text-transform: uppercase;
+            font-size: 1.2rem;
             white-space: nowrap;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
         }
 
-        .marquee-media-item {
-            height: 55px;
-            width: auto;
-            border-radius: 10px;
-            border: 1px solid var(--solar-gold);
-            transition: 0.4s ease;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        .marquee-img-node {
+            height: 65px;
+            border-radius: 15px;
+            border: 2px solid var(--lux-gold);
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
         }
 
-        .marquee-media-item:hover {
-            transform: scale(1.6);
-            z-index: 10;
-            box-shadow: 0 0 30px var(--gold-glow);
+        .marquee-img-node:hover {
+            transform: scale(2.2) rotate(5deg);
+            z-index: 100;
+            box-shadow: 0 0 50px var(--lux-gold-dim);
         }
 
-        /* --- 4. PROPERTY SHOWCASE GRID --- */
-        .main-content-area {
-            padding: clamp(30px, 5vw, 60px) clamp(15px, 5vw, 100px);
-            max-width: 1600px;
+        /* --- 4. TEAM MANAGEMENT SECTION --- */
+        .as-section {
+            padding: 100px 20px;
+            max-width: 1400px;
             margin: auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
 
         .section-header h2 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 5vw, 2.8rem);
-            color: var(--solar-gold);
-            margin-bottom: 15px;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            color: var(--lux-gold);
+            margin-bottom: 20px;
         }
 
-        .section-header .divider {
-            width: 100px;
+        .section-header .line {
+            width: 120px;
             height: 4px;
-            background: var(--solar-gold);
+            background: var(--lux-gold);
             margin: auto;
             border-radius: 10px;
         }
 
-        .property-grid-container {
+        .team-grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 45px;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 40px;
         }
 
-        .p-listing-card {
-            background: var(--card-bg);
-            border-radius: 35px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(25px);
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .member-card {
+            background: var(--glass-panel);
+            border-radius: 40px;
+            padding: 60px 40px;
+            border: 1px solid var(--border-glow);
+            text-align: center;
+            transition: 0.5s;
             position: relative;
+            overflow: hidden;
         }
 
-        .p-listing-card:hover {
+        .member-card:hover {
             transform: translateY(-20px);
-            border-color: var(--solar-gold);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+            border-color: var(--lux-gold);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9);
         }
 
-        .p-card-media {
-            height: 280px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .p-card-media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 1.2s;
-        }
-
-        .p-listing-card:hover .p-card-media img {
-            transform: scale(1.15);
-        }
-
-        .p-status-badge {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            background: var(--solar-gold);
-            color: #000;
-            padding: 8px 20px;
-            border-radius: 12px;
-            font-weight: 900;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-        }
-
-        .p-card-details {
-            padding: 30px;
-        }
-
-        .p-card-price {
-            font-size: 2.2rem;
-            color: var(--solar-gold);
+        .member-card h3 {
+            color: var(--lux-gold);
+            font-size: 1.8rem;
             font-weight: 800;
             margin-bottom: 12px;
-            display: block;
-        }
-
-        .p-card-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .p-card-meta {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        /* --- SOCIAL MEDIA LINKS IN CARD --- */
-        .p-social-ribbon {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .soc-ribbon-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .btn-youtube { background: #ff0000; }
-        .btn-tiktok { background: #000; border-color: #fff; }
-        .btn-facebook { background: #1877f2; }
-        .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-
-        .soc-ribbon-btn:hover {
-            transform: scale(1.2) rotate(10deg);
-            filter: brightness(1.2);
-        }
-
-        /* --- ACTION BUTTONS --- */
-        .p-btn-row {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 15px;
-        }
-
-        .p-btn-master {
-            height: 60px;
-            border-radius: 18px;
-            border: none;
-            background: var(--solar-gold);
-            color: #000;
-            font-weight: 900;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .p-btn-master:active { transform: scale(0.95); }
-
-        .p-btn-danger {
-            width: 60px;
-            height: 60px;
-            border-radius: 18px;
-            background: #da3633;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: 0.3s;
-        }
-
-        /* --- 5. MASTER ADMIN DASHBOARD --- */
-        .admin-dashboard-container {
-            max-width: 900px;
-            margin: auto;
-            padding: 40px 20px;
-        }
-
-        .admin-glass-card {
-            background: #0d1117;
-            border: 2px solid var(--solar-gold);
-            border-radius: 40px;
-            padding: 50px;
-            box-shadow: var(--shadow-lux);
-        }
-
-        .admin-heading {
             font-family: 'Cinzel', serif;
-            color: var(--solar-gold);
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2rem;
         }
 
-        .form-control-group {
+        .member-card p {
+            font-size: 1rem;
+            color: var(--text-muted);
             margin-bottom: 35px;
-        }
-
-        .control-label {
-            display: block;
-            margin-bottom: 12px;
-            color: var(--solar-gold);
-            font-weight: 700;
-            font-size: 0.9rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
-        .as-modern-input {
-            width: 100%;
-            background: #000;
-            border: 1px solid #222;
-            border-radius: 18px;
-            padding: 18px 25px;
-            color: white;
-            font-size: 1.1rem;
-            outline: none;
-            transition: 0.3s;
+        .contact-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
 
-        .as-modern-input:focus {
-            border-color: var(--solar-gold);
-            box-shadow: 0 0 15px rgba(255, 223, 0, 0.15);
-        }
-
-        .btn-upload-trigger {
-            border: 3px dashed #222;
-            padding: 50px;
-            border-radius: 25px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            background: rgba(0,0,0,0.2);
-        }
-
-        .btn-upload-trigger:hover {
-            border-color: var(--solar-gold);
-            background: rgba(255, 223, 0, 0.05);
-        }
-
-        .preview-pane {
-            width: 100%;
-            height: auto;
-            max-height: 400px;
-            object-fit: contain;
+        .action-btn {
+            flex: 1;
+            padding: 18px;
             border-radius: 20px;
-            margin-top: 25px;
-            display: none;
-            border: 1px solid var(--solar-gold);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
 
-        /* --- UTILS --- */
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
+        .btn-call { background: var(--lux-gold); color: #000; }
+        .btn-wa { background: #25d366; color: #fff; }
 
-        footer {
+        .action-btn:active { transform: scale(0.93); }
+
+        /* --- 5. PROPERTY SHOWCASE GRID --- */
+        .property-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 50px;
+            padding-top: 40px;
+        }
+
+        .lux-card {
+            background: #0d1117;
+            border-radius: 45px;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+            position: relative;
+            transition: 0.6s;
+        }
+
+        .lux-card:hover {
+            border-color: var(--lux-gold);
+            transform: translateY(-15px) scale(1.02);
+        }
+
+        .lux-card-media {
+            height: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lux-card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 1.5s ease;
+        }
+
+        .lux-card:hover .lux-card-media img { transform: scale(1.15); }
+
+        .lux-card-badge {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: var(--lux-gold);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: 900;
+            font-size: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .lux-card-body { padding: 40px; }
+        .lux-card-price { font-size: 2.2rem; color: var(--lux-gold); font-weight: 900; margin-bottom: 12px; }
+        .lux-card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4; }
+
+        /* --- 6. MASTER ADMIN CONTROL PANEL --- */
+        .admin-master-glass {
+            max-width: 1000px;
+            margin: 60px auto;
+            background: #0d1117;
+            border: 3px solid var(--lux-gold);
+            border-radius: 50px;
+            padding: clamp(30px, 6vw, 80px);
+            box-shadow: 0 50px 120px rgba(0,0,0,0.95);
+        }
+
+        .form-group { margin-bottom: 35px; }
+        .label-text { display: block; margin-bottom: 15px; color: var(--lux-gold); font-weight: 800; font-size: 1rem; }
+
+        .lux-input {
+            width: 100%;
             background: #000;
-            padding: 120px 20px 60px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(255, 223, 0, 0.1);
-            margin-top: 100px;
+            border: 2px solid #30363d;
+            border-radius: 22px;
+            padding: 22px 30px;
+            color: #fff;
+            font-size: 1.15rem;
+            outline: none;
+            transition: 0.4s;
         }
 
-        .footer-logo {
-            font-family: 'Cinzel', serif;
-            color: var(--solar-gold);
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+        .lux-input:focus { border-color: var(--lux-gold); box-shadow: 0 0 25px var(--lux-gold-dim); }
+
+        .lux-master-btn {
+            width: 100%;
+            padding: 25px;
+            background: var(--lux-gold);
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            font-weight: 900;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 15px 40px var(--lux-gold-dim);
+            transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .copyright-tag {
-            margin-top: 50px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
+        .lux-master-btn:active { transform: scale(0.96); }
 
-        /* --- MOBILE OPTIMIZATION --- */
-        @media (max-width: 768px) {
-            header { padding: 0 20px; height: 75px; }
-            .admin-glass-card { padding: 25px; border-radius: 25px; }
-            .property-grid-container { gap: 25px; }
-            .p-card-media { height: 220px; }
-            .p-card-price { font-size: 1.8rem; }
+        /* --- UTILS & MOBILE --- */
+        .hidden { display: none !important; }
+        footer { padding: 100px 20px; border-top: 1px solid #1c2128; text-align: center; margin-top: 100px; }
+
+        @media (max-width: 800px) {
+            .side-nav-drawer { width: 100%; right: -100%; }
+            .property-showcase { gap: 30px; }
+            .lux-card-media { height: 260px; }
+            .lux-card-body { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <div class="splash-title-box">
-            <h1 class="splash-main-text">A&S RealEstate Isb</h1>
-            <p class="splash-sub-text">Saqib Zaheer Satti Production</p>
-        </div>
-        <div style="margin-top: 40px;">
-            <div style="width: 200px; height: 2px; background: #222; position: relative; overflow: hidden;">
-                <div style="width: 60%; height: 100%; background: var(--solar-gold); animation: slideProgress 2s infinite linear;"></div>
-            </div>
-        </div>
+        <h1 class="splash-branding">A&S RealEstate Isb</h1>
+        <div class="splash-loader-bar"></div>
     </div>
 
     <header>
-        <div class="brand-identity" id="main-brand-logo" onclick="handleSecretTaps()">
-            A&S RealEstate Isb
-        </div>
-        <div id="pwa-install-btn" class="pwa-install-trigger" onclick="triggerPwaInstall()">
-            INSTALL OFFICIAL APP
+        <a href="/" class="header-logo">A&S RealEstate Isb</a>
+        <div class="hamburger-icon" onclick="toggleSideNav()">
+            <i class="fa-solid fa-bars-staggered"></i>
         </div>
     </header>
 
-    <div class="scrolling-news-wrapper">
-        <marquee behavior="scroll" direction="left" scrollamount="12" onmouseover="this.stop();" onmouseout="this.start();">
-            <div class="marquee-inner">
-                <span class="marquee-news-text">🏛️ LIVE PROPERTY BROADCAST: {{ rates }}</span>
-                {% for b_img in m_imgs %}
-                    <img src="{{ b_img.image_url }}" class="marquee-media-item">
+    <nav class="side-nav-drawer" id="side-drawer">
+        <a href="#" class="drawer-item" onclick="navigateTo('home')">
+            <i class="fa-solid fa-house-chimney"></i> Home Dashboard
+        </a>
+        <a href="#" class="drawer-item" onclick="navigateTo('team')">
+            <i class="fa-solid fa-user-tie"></i> Contact Management
+        </a>
+        <a href="https://wa.me/923410585559" target="_blank" class="drawer-item">
+            <i class="fab fa-whatsapp"></i> Direct Support
+        </a>
+        <a href="#" class="drawer-item" onclick="openMasterAdmin()">
+            <i class="fa-solid fa-shield-halved"></i> Master Login
+        </a>
+    </nav>
+
+    <div class="marquee-container">
+        <marquee scrollamount="14" onmouseover="this.stop()" onmouseout="this.start()">
+            <div class="marquee-content-box">
+                <span class="marquee-text-node">💎 OFFICIAL BROADCAST: {{ rates }}</span>
+                {% for media in m_imgs %}
+                    <img src="{{ media.media_url }}" class="marquee-img-node" alt="A&S Media">
                 {% endfor %}
-                <span class="marquee-news-text">⭐ A&S MANAGEMENT: EXCLUSIVE PARTNERS FOR DHA & BAHRIA ENCLAVE ⭐</span>
+                <span class="marquee-text-node">🏆 A&S MANAGEMENT: TRUSTED BY THOUSANDS IN TWIN CITIES 🏆</span>
             </div>
         </marquee>
     </div>
 
-    <main class="main-content-area">
+    <main class="as-section">
 
-        <section id="portal-home">
+        <section id="view-home">
             <div class="section-header">
                 <h2>Verified Listings</h2>
-                <div class="divider"></div>
+                <div class="line"></div>
             </div>
             
-            <div id="global-loader" class="text-center" style="padding: 100px;">
-                <i class="fa-solid fa-crown fa-beat-fade" style="color: var(--solar-gold); font-size: 4rem;"></i>
+            <div id="loader-icon" class="text-center" style="padding: 120px; text-align: center;">
+                <i class="fa-solid fa-crown fa-beat" style="color:var(--lux-gold); font-size: 5rem;"></i>
+                <p style="margin-top: 25px; letter-spacing: 5px; opacity: 0.5;">SYNCING WITH CLOUD...</p>
             </div>
 
-            <div class="property-grid-container" id="listings-render-grid">
+            <div class="property-showcase" id="property-render-grid">
                 </div>
         </section>
 
-        <section id="portal-admin" class="hidden">
-            <div class="admin-dashboard-container">
+        <section id="view-team" class="hidden">
+            <div class="section-header">
+                <h2>Management Team</h2>
+                <div class="line"></div>
+            </div>
+            
+            <div class="team-grid-layout">
+                <div class="member-card">
+                    <h3>Umer Aftab</h3>
+                    <p>MANAGING DIRECTOR</p>
+                    <div class="contact-row">
+                        <a href="tel:+923155855590" class="action-btn btn-call"><i class="fa fa-phone"></i> Call</a>
+                        <a href="https://wa.me/923155855590" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <h3>Bilal Aftab</h3>
+                    <p>PROJECT HEAD</p>
+                    <div class="contact-row">
+                        <a href="tel:+923455855590" class="action-btn btn-call"><i class="fa fa-phone"></i> Call</a>
+                        <a href="https://wa.me/923455855590" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <h3>Talha Aftab</h3>
+                    <p>EXECUTIVE LEAD</p>
+                    <div class="contact-row">
+                        <a href="tel:+923115855590" class="action-btn btn-call"><i class="fa fa-phone"></i> Call</a>
+                        <a href="https://wa.me/923115855590" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-admin" class="hidden">
+            <div class="admin-master-glass">
                 
-                <div id="admin-lock-screen" class="admin-glass-card">
-                    <h2 class="admin-heading">System Lock</h2>
-                    <div class="form-control-group">
-                        <label class="control-label">Security PIN</label>
-                        <input type="password" id="admin-pass-input" class="as-modern-input" placeholder="••••••••">
+                <div id="auth-gateway">
+                    <h2 style="color:var(--lux-gold); text-align:center; margin-bottom:40px; font-family:'Cinzel';">Security Access</h2>
+                    <div class="form-group">
+                        <label class="label-text">MASTER SYSTEM PIN</label>
+                        <input type="password" id="login-pin" class="lux-input" placeholder="••••••••">
                     </div>
-                    <button class="p-btn-master" onclick="unlockAdminDashboard()">Authenticate System</button>
+                    <button class="lux-master-btn" onclick="verifyAdminAccess()">Unlock Terminal</button>
                 </div>
 
-                <div id="admin-main-panel" class="hidden">
+                <div id="master-terminal" class="hidden">
+                    <h2 style="color:var(--lux-gold); margin-bottom:50px; font-family:'Cinzel';">System Control</h2>
                     
-                    <div class="admin-glass-card" style="margin-bottom: 40px;">
-                        <h3 style="color:var(--solar-gold); margin-bottom:25px;"><i class="fa fa-bullhorn"></i> Live Broadcast Config</h3>
-                        <div class="form-control-group">
-                            <label class="control-label">Marquee Text Content</label>
-                            <textarea id="admin-marquee-txt" class="as-modern-input" rows="3" placeholder="Enter market rates..."></textarea>
-                        </div>
-                        <button class="p-btn-master" style="height:55px; font-size:0.9rem;" onclick="syncMarqueeText()">Sync Broadcast Text</button>
-                        
-                        <div class="form-control-group" style="margin-top:30px;">
-                            <label class="control-label">Add Media to Strip (Picture)</label>
-                            <input type="file" id="admin-marquee-file" class="hidden" accept="image/*" onchange="processMarqueeImage(this)">
-                            <div class="btn-upload-trigger" onclick="document.getElementById('admin-marquee-file').click()">
-                                <i class="fa fa-camera" style="font-size: 2.5rem; color: var(--solar-gold);"></i>
-                                <p style="margin-top:10px;">Upload Marquee Visual</p>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label class="label-text">Update Broadcast Text (Rates/News)</label>
+                        <textarea id="inp-marquee" class="lux-input" rows="3" placeholder="Enter scrolling text..."></textarea>
+                        <button class="lux-master-btn" style="margin-top: 15px; font-size: 1rem; padding: 18px;" onclick="saveMarqueeText()">Sync Broadcast</button>
                     </div>
 
-                    <div class="admin-glass-card">
-                        <h3 style="color:var(--solar-gold); margin-bottom:25px;"><i class="fa fa-plus-circle"></i> New Property Entry</h3>
-                        
-                        <div class="form-control-group">
-                            <label class="control-label">Listing Title</label>
-                            <input type="text" id="p-inp-title" class="as-modern-input" placeholder="e.g. 10 Marla Luxury House">
-                        </div>
+                    <div style="height: 2px; background: #1c2128; margin: 50px 0;"></div>
 
-                        <div class="form-control-group">
-                            <label class="control-label">Final Price (PKR)</label>
-                            <input type="text" id="p-inp-price" class="as-modern-input" placeholder="e.g. 4.5 Crore">
-                        </div>
-
-                        <div class="form-control-group">
-                            <label class="control-label">Area/Location</label>
-                            <input type="text" id="p-inp-area" class="as-modern-input" placeholder="e.g. PHC Officers Residential">
-                        </div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-control-group"><label class="control-label">YouTube URL</label><input type="text" id="p-inp-yt" class="as-modern-input"></div>
-                            <div class="form-control-group"><label class="control-label">TikTok URL</label><input type="text" id="p-inp-tt" class="as-modern-input"></div>
-                            <div class="form-control-group"><label class="control-label">Insta URL</label><input type="text" id="p-inp-in" class="as-modern-input"></div>
-                            <div class="form-control-group"><label class="control-label">Facebook URL</label><input type="text" id="p-inp-fb" class="as-modern-input"></div>
-                        </div>
-
-                        <div class="form-control-group">
-                            <label class="control-label">Property Main Image</label>
-                            <input type="file" id="p-inp-file" class="hidden" accept="image/*" onchange="handleMainImageUpload(this)">
-                            <div class="btn-upload-trigger" onclick="document.getElementById('p-inp-file').click()">
-                                <i class="fa fa-image" style="font-size: 2.5rem; color: var(--solar-gold);"></i>
-                                <p>Select Gallery Image</p>
-                                <img id="p-upload-preview" class="preview-pane">
-                            </div>
-                        </div>
-
-                        <button class="p-btn-master" id="publish-trigger-btn" onclick="publishNewListing()">Publish to Cloud Database</button>
+                    <div class="form-group">
+                        <label class="label-text">Push Image to Broadcast Stream</label>
+                        <input type="file" class="lux-input" accept="image/*" onchange="pushMediaBroadcast(this)">
                     </div>
 
+                    <div style="height: 2px; background: #1c2128; margin: 50px 0;"></div>
+
+                    <h3 style="color:var(--lux-gold); margin-bottom:30px; font-family:'Cinzel';">Publish New Listing</h3>
+                    <div class="form-group">
+                        <label class="label-text">Title (e.g. 5 Marla Plot G-13)</label>
+                        <input type="text" id="p-title" class="lux-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="label-text">Demand Price</label>
+                        <input type="text" id="p-price" class="lux-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="label-text">Area / Sector</label>
+                        <input type="text" id="p-area" class="lux-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="label-text">YouTube Video URL</label>
+                        <input type="text" id="p-yt" class="lux-input" placeholder="https://youtube.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="label-text">Main Cover Image</label>
+                        <input type="file" class="lux-input" accept="image/*" onchange="processMainImage(this)">
+                    </div>
+                    <button class="lux-master-btn" onclick="publishProperty()">Publish to Cloud</button>
                 </div>
+
             </div>
         </section>
 
     </main>
 
     <footer>
-        <div class="footer-logo">A&S RealEstate Isb</div>
-        <p style="color: var(--text-muted); max-width: 700px; margin: auto;">Providing elite real estate consultancy across Islamabad and Rawalpindi. We deal in DHA, Bahria Enclave, PHC Residential, and prime sectors with absolute transparency.</p>
-        
-        <div class="copyright-tag">
-            © 2026 Developed & Maintained by <span style="color: var(--solar-gold); font-weight: 800;">Saqib Zaheer Satti</span>. All Rights Reserved.
+        <h2 style="font-family:'Cinzel'; color:var(--lux-gold); margin-bottom:15px; letter-spacing: 5px;">A&S RealEstate Isb</h2>
+        <p style="opacity:0.5; font-size:0.95rem; font-weight:300;">Authorized Property Management Portal | Pakistan</p>
+        <div style="margin-top: 50px; font-size:0.85rem; color:var(--text-muted); border-top: 1px solid #1c2128; padding-top: 30px;">
+            Engineered & Optimized by <span style="color:var(--lux-gold); font-weight:900;">Saqib Zaheer Satti</span>
         </div>
     </footer>
 
     <script>
-        // --- GLOBAL STATE ---
-        let currentTapCount = 0;
-        let masterPin = "";
-        let cloudProperties = [];
-        let tempMainBase64 = "";
-        let adminSessionActive = false;
+        let propertyList = [];
+        let temporaryBase64 = "";
+        let masterAccess = false;
 
-        /**
-         * SECRET ADMIN ACCESS: 5-TAP LOGIC
-         * Only Saqib Zaheer Satti knows this portal entrance.
-         */
-        function handleSecretTaps() {
-            currentTapCount++;
-            if(currentTapCount >= 5) {
-                currentTapCount = 0;
-                navigateTo('admin');
-            }
-            // Reset counter if no taps occur within 3 seconds
-            setTimeout(() => { currentTapCount = 0; }, 3000);
+        // --- NAVIGATION ENGINE ---
+        function toggleSideNav() {
+            document.getElementById('side-drawer').classList.toggle('active');
         }
 
-        function navigateTo(targetPage) {
-            document.getElementById('portal-home').classList.add('hidden');
-            document.getElementById('portal-admin').classList.add('hidden');
-            document.getElementById('portal-' + targetPage).classList.remove('hidden');
-            window.scrollTo(0,0);
+        function navigateTo(viewId) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+            toggleSideNav();
+            window.scrollTo(0, 0);
         }
 
-        // --- AUTHENTICATION LOGIC ---
-        async function unlockAdminDashboard() {
-            const enteredPin = document.getElementById('admin-pass-input').value;
-            const res = await fetch('/get_auth_key');
-            const data = await res.json();
+        function openMasterAdmin() {
+            navigateTo('admin');
+        }
 
+        // --- SECURITY ENGINE ---
+        async function verifyAdminAccess() {
+            const enteredPin = document.getElementById('login-pin').value;
+            const response = await fetch('/fetch_security_pin');
+            const data = await response.json();
+            
             if(enteredPin === data.pin) {
-                adminSessionActive = true;
-                document.getElementById('admin-lock-screen').classList.add('hidden');
-                document.getElementById('admin-main-panel').classList.remove('hidden');
-                refreshPortalData(); // Refresh UI to show delete buttons
+                masterAccess = true;
+                document.getElementById('auth-gateway').classList.add('hidden');
+                document.getElementById('master-terminal').classList.remove('hidden');
+                refreshDataFromCloud();
             } else {
-                alert("CRITICAL SECURITY: Authentication failed. Please verify credentials.");
+                alert("ACCESS DENIED: Master Security Breach Detected.");
             }
         }
 
-        // --- CLOUD SYNC & RENDERING ---
-        async function refreshPortalData() {
-            document.getElementById('global-loader').classList.remove('hidden');
+        // --- CLOUD DATA ENGINE ---
+        async function refreshDataFromCloud() {
+            const loader = document.getElementById('loader-icon');
+            loader.classList.remove('hidden');
+            
             try {
-                const response = await fetch('/get_properties');
-                cloudProperties = await response.json();
-                renderUIListings();
+                const res = await fetch('/get_properties');
+                propertyList = await res.json();
+                renderPropertyInterface();
             } catch (err) {
                 console.error("Cloud Sync Error:", err);
             }
-            document.getElementById('global-loader').classList.add('hidden');
+            loader.classList.add('hidden');
         }
 
-        function renderUIListings() {
-            const grid = document.getElementById('listings-render-grid');
-            if(cloudProperties.length === 0) {
-                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; opacity:0.3;"><h1>No active listings.</h1></div>`;
+        function renderPropertyInterface() {
+            const grid = document.getElementById('property-render-grid');
+            if(propertyList.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:100px; opacity:0.2;"><h1>NO LISTINGS IN CLOUD</h1></div>`;
                 return;
             }
 
-            grid.innerHTML = cloudProperties.map(p => `
-                <div class="p-listing-card">
-                    <div class="p-card-media">
-                        <div class="p-status-badge">Official A&S Verified</div>
-                        <img src="${p.img_base64}" alt="Property Media">
+            grid.innerHTML = propertyList.map(item => `
+                <div class="lux-card">
+                    <div class="lux-card-media">
+                        <div class="lux-card-badge">VERIFIED ASSET</div>
+                        <img src="${item.img_base64}" alt="Property Image">
                     </div>
-                    <div class="p-card-details">
-                        <span class="p-card-price">PKR ${p.price}</span>
-                        <h3 class="p-card-title">${p.title}</h3>
-                        <div class="p-card-meta"><i class="fa-solid fa-location-dot" style="color:var(--solar-gold)"></i> ${p.area}</div>
+                    <div class="lux-card-body">
+                        <div class="lux-card-price">PKR ${item.price}</div>
+                        <h3 class="lux-card-title">${item.title}</h3>
+                        <p style="color:var(--text-muted); margin-bottom:30px;"><i class="fa-solid fa-location-dot" style="color:var(--lux-gold);"></i> ${item.area}</p>
                         
-                        <div class="p-social-ribbon">
-                            ${p.url_yt ? `<a href="${p.url_yt}" target="_blank" class="soc-ribbon-btn btn-youtube"><i class="fab fa-youtube"></i></a>` : ''}
-                            ${p.url_tt ? `<a href="${p.url_tt}" target="_blank" class="soc-ribbon-btn btn-tiktok"><i class="fab fa-tiktok"></i></a>` : ''}
-                            ${p.url_fb ? `<a href="${p.url_fb}" target="_blank" class="soc-ribbon-btn btn-facebook"><i class="fab fa-facebook"></i></a>` : ''}
-                            ${p.url_in ? `<a href="${p.url_in}" target="_blank" class="soc-ribbon-btn btn-instagram"><i class="fab fa-instagram"></i></a>` : ''}
-                        </div>
-
-                        <div class="p-btn-row">
-                            <a href="https://wa.me/923410585559?text=Assalam o Alaikum, Inquiry for: ${p.title}" class="p-btn-master" style="text-decoration:none;">
-                                <i class="fab fa-whatsapp"></i> WhatsApp Team
+                        <div class="contact-row" style="justify-content:flex-start;">
+                            <a href="https://wa.me/923410585559?text=Interested in: ${item.title}" class="action-btn btn-wa">
+                                <i class="fab fa-whatsapp"></i> Inquire
                             </a>
-                            ${adminSessionActive ? `<button class="p-btn-danger" onclick="deletePropertyEntry('${p._id}')"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                            ${item.yt_link ? `<a href="${item.yt_link}" target="_blank" class="action-btn btn-call" style="flex:0; width:60px;"><i class="fab fa-youtube"></i></a>` : ''}
+                            ${masterAccess ? `<button onclick="deleteCloudRecord('${item._id}')" style="background:#da3633; border:none; color:white; padding:15px; border-radius:15px; cursor:pointer;"><i class="fa fa-trash"></i></button>` : ''}
                         </div>
                     </div>
                 </div>
@@ -709,124 +667,80 @@
         }
 
         // --- MEDIA PROCESSING ---
-        function handleMainImageUpload(input) {
-            const preview = document.getElementById('p-upload-preview');
-            const file = input.files[0];
+        function processMainImage(input) {
             const reader = new FileReader();
-
-            reader.onloadend = () => {
-                preview.src = reader.result;
-                preview.style.display = 'block';
-                tempMainBase64 = reader.result;
-            }
-            if (file) reader.readAsDataURL(file);
+            reader.onload = (e) => temporaryBase64 = e.target.result;
+            reader.readAsDataURL(input.files[0]);
         }
 
-        async function processMarqueeImage(input) {
-            const file = input.files[0];
+        async function pushMediaBroadcast(input) {
             const reader = new FileReader();
-            reader.onloadend = async () => {
-                const imgData = reader.result;
-                await fetch('/upload_marquee_photo', {
+            reader.onload = async (e) => {
+                await fetch('/push_marquee_media', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ image_data: imgData })
+                    body: JSON.stringify({ image_stream: e.target.result })
                 });
-                alert("Visual Marquee Synced!");
+                alert("Visual Broadcast Synchronized!");
                 location.reload();
             };
-            if (file) reader.readAsDataURL(file);
+            reader.readAsDataURL(input.files[0]);
         }
 
-        // --- DATABASE OPERATIONS ---
-        async function publishNewListing() {
-            const btn = document.getElementById('publish-trigger-btn');
-            const payload = {
-                title: document.getElementById('p-inp-title').value,
-                price: document.getElementById('p-inp-price').value,
-                area: document.getElementById('p-inp-area').value,
-                url_yt: document.getElementById('p-inp-yt').value,
-                url_tt: document.getElementById('p-inp-tt').value,
-                url_fb: document.getElementById('p-inp-fb').value,
-                url_in: document.getElementById('p-inp-in').value,
-                img_base64: tempMainBase64
+        // --- TERMINAL COMMANDS ---
+        async function saveMarqueeText() {
+            const txt = document.getElementById('inp-marquee').value;
+            await fetch('/update_live_rates', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ text_data: txt })
+            });
+            alert("Scrolling Text Updated!");
+            location.reload();
+        }
+
+        async function publishProperty() {
+            const data = {
+                title: document.getElementById('p-title').value,
+                price: document.getElementById('p-price').value,
+                area: document.getElementById('p-area').value,
+                yt_link: document.getElementById('p-yt').value,
+                img_base64: temporaryBase64
             };
 
-            if(!payload.title || !payload.img_base64) {
-                alert("Validation: Title and Image are required.");
-                return;
-            }
-
-            btn.innerText = "UPLOADING TO CLOUD...";
-            btn.disabled = true;
+            if(!data.title || !data.img_base64) { alert("ERROR: Incomplete Data."); return; }
 
             const res = await fetch('/save_property', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
+                body: JSON.stringify(data)
             });
-
-            if(res.ok) { alert("Listing Published Successfully!"); location.reload(); }
-            else { alert("Cloud Failure!"); btn.disabled = false; btn.innerText = "Retry Upload"; }
-        }
-
-        async function deletePropertyEntry(id) {
-            if(!confirm("Warning: Permanently delete this listing?")) return;
-            await fetch('/remove_listing', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ target_id: id })
-            });
-            refreshPortalData();
-        }
-
-        async function syncMarqueeText() {
-            const txt = document.getElementById('admin-marquee-txt').value;
-            await fetch('/update_global_config', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ marquee_text: txt })
-            });
-            alert("Broadcast Text Updated!");
-            location.reload();
-        }
-
-        // --- PWA INSTALL SYSTEM ---
-        let pwaEvent;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            pwaEvent = e;
-            document.getElementById('pwa-install-btn').style.display = 'block';
-        });
-
-        async function triggerPwaInstall() {
-            if (pwaEvent) {
-                pwaEvent.prompt();
-                const { outcome } = await pwaEvent.userChoice;
-                if (outcome === 'accepted') {
-                    document.getElementById('pwa-install-btn').style.display = 'none';
-                }
-                pwaEvent = null;
+            
+            if(res.ok) {
+                alert("LISTING PUBLISHED SUCCESSFULLY!");
+                location.reload();
             }
         }
 
-        // --- SYSTEM BOOT SEQUENCE ---
+        async function deleteCloudRecord(id) {
+            if(!confirm("PERMANENTLY PURGE THIS LISTING?")) return;
+            await fetch('/purge_listing', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ id_to_delete: id })
+            });
+            refreshDataFromCloud();
+        }
+
+        // --- SYSTEM BOOTSTRAP ---
         window.addEventListener('load', () => {
-            // Splash Control
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.style.opacity = '0';
-                setTimeout(() => { splash.classList.add('hidden'); }, 1200);
+                setTimeout(() => splash.classList.add('hidden'), 1500);
             }, 3000);
-
-            // Fetch Data
-            refreshPortalData();
+            refreshDataFromCloud();
         });
-
-        // Registering Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
-        }
     </script>
 </body>
 </html>
