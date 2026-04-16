@@ -1,202 +1,213 @@
 # ==============================================================================
-# PROJECT NAME: A&S RealEstate Isb - OFFICIAL MANAGEMENT SYSTEM
-# VERSION: 6.5 (Final Production Build)
-# CHIEF DEVELOPER: Saqib Zaheer Satti
-# DATABASE ENGINE: MongoDB Atlas Cloud
+# PROJECT: A&S REAL ESTATE ISLAMABAD - ENTERPRISE MANAGEMENT SYSTEM
+# VERSION: 10.0.0 (ULTIMATE MASTER BUILD)
+# CHIEF DEVELOPER: SAQIB ZAHEER SATTI
+# TEAM CORE: UMER AFTAB, BILAL AFTAB, TALHA AFTAB
 # ==============================================================================
 
-from flask import Flask, render_template, request, jsonify, send_from_directory, url_for
 import os
 import json
-import base64
-from pymongo import MongoClient
-from urllib.parse import quote_plus
+import logging
 from datetime import datetime
-from bson.objectid import ObjectId
+from urllib.parse import quote_plus
+from flask import Flask, render_template, request, jsonify, send_from_directory
 
-# --- FLASK APPLICATION CORE ---
+# Advanced Database Connectivity Drivers
+try:
+    from pymongo import MongoClient
+    from bson.objectid import ObjectId
+except ImportError:
+    print("CRITICAL: Pymongo or BSON not found. Please run 'pip install pymongo'")
+
+# --- FLASK APPLICATION CORE SETUP ---
 app = Flask(__name__)
 
-# --- SECURE CLOUD DATABASE (A&S OFFICIAL) ---
-# Credentials as specified by Saqib Zaheer Satti
-DB_USER = "saqibzaheersattirocklight_db_user"
-DB_PASS = "DsUTBwyxsi5sdYf2"
-ENCODED_PASS = quote_plus(DB_PASS)
+# --- SECURE CLOUD DATABASE CONFIGURATION ---
+# Owner Identity: Saqib Zaheer Satti (Authorized Only)
+DB_USERNAME = "saqibzaheersattirocklight_db_user"
+DB_PASSWORD = "DsUTBwyxsi5sdYf2"
+SAFE_PASSWORD = quote_plus(DB_PASSWORD)
 
-# MongoDB Connection for Cluster0 - Advanced Persistence Configuration
-MONGO_URI = f"mongodb+srv://{DB_USER}:{ENCODED_PASS}@cluster0.vvzewi4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# MongoDB Connection String Optimized for Islamabad Region
+MONGO_URI = f"mongodb+srv://{DB_USERNAME}:{SAFE_PASSWORD}@cluster0.vvzewi4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
+# --- GLOBAL DATABASE INITIALIZATION LOGIC ---
 try:
-    # Initializing Client with specialized timeout handlers for Pakistani ISP stability
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=15000, connectTimeoutMS=15000)
-    db = client['AS_RealEstate_ISB_v7_Official']
+    # Established connection with 20-second high-latency handshake for stable ISP performance
+    cloud_client = MongoClient(
+        MONGO_URI, 
+        serverSelectionTimeoutMS=20000,
+        connectTimeoutMS=20000,
+        socketTimeoutMS=20000
+    )
     
-    # Core System Collections
-    properties_listing = db['real_estate_listings']
-    app_settings = db['system_configurations']
-    broadcast_marquee = db['media_broadcast_marquee']
+    # Target Production Database: A&S Official Store
+    as_db = cloud_client['AS_Management_System_v10_Official']
     
-    # Connectivity Authentication Ping
-    client.admin.command('ping')
-    print("\n" + "="*60)
-    print(">>> SYSTEM STATUS: CLOUD DATABASE CONNECTED SUCCESSFULLY <<<")
-    print(">>> PROJECT OWNER: SAQIB ZAHEER SATTI <<<")
-    print("="*60 + "\n")
-except Exception as connection_error:
-    print(f"CRITICAL SYSTEM ERROR (DB): {str(connection_error)}")
+    # Mapping Business Collections
+    listings_col = as_db['property_listing_data']
+    settings_col = as_db['global_application_settings']
+    broadcast_col = as_db['marquee_media_broadcast']
+    
+    # Diagnostic Handshake
+    cloud_client.admin.command('ping')
+    print("\n" + "*" * 65)
+    print("STATUS: A&S CLOUD INFRASTRUCTURE IS ONLINE")
+    print("REGISTERED DEVELOPER: SAQIB ZAHEER SATTI")
+    print("TEAM ACCESS: UMER AFTAB | BILAL AFTAB | TALHA AFTAB")
+    print("*" * 65 + "\n")
+    
+except Exception as cloud_err:
+    print(f"FATAL CLOUD CONNECTION FAILURE: {str(cloud_err)}")
 
-# --- SYSTEM ROUTING LOGIC ---
+# --- SYSTEM CONTROLLERS (API & ROUTING) ---
 
 @app.route('/')
-def home_portal():
+def load_portal_interface():
     """
-    Main Interface Route.
-    Fetches synchronized marquee text and live broadcast images for the landing page.
+    Primary Entry Point for A&S Portal.
+    Synchronizes Scrolling Text and Broadcast Images from Cloud.
     """
     try:
-        # Fetching dynamic marquee text from the cloud
-        marquee_config = app_settings.find_one({"config_id": "active_live_marquee"})
-        if marquee_config and 'text_content' in marquee_config:
-            live_text = marquee_config['text_content']
+        # 1. Fetching Dynamic Marquee Content
+        marquee_query = settings_col.find_one({"meta_key": "active_marquee_rates"})
+        if marquee_query and 'text_content' in marquee_query:
+            current_rates = marquee_query['text_content']
         else:
-            live_text = "Welcome to A&S RealEstate Isb - Your Trusted Partner in Islamabad & Rawalpindi."
-        
-        # Fetching visual broadcast images for the scrolling media strip
-        live_media = list(broadcast_marquee.find().sort('_id', -1).limit(10))
-        for media_item in live_media:
-            media_item['_id'] = str(media_item['_id'])
+            current_rates = "A&S Real Estate: Premium Property Solutions in Islamabad & Rawalpindi."
             
-        return render_template('index.html', rates=live_text, m_imgs=live_media)
-    except Exception as e:
-        print(f"Routing Error on Index: {e}")
-        return render_template('index.html', rates="A&S RealEstate Isb Portal Online", m_imgs=[])
+        # 2. Fetching Visual Media Stream (Last 15 Uploads)
+        broadcast_stream = list(broadcast_col.find().sort('_id', -1).limit(15))
+        for item in broadcast_stream:
+            item['_id'] = str(item['_id'])
+            
+        return render_template(
+            'index.html', 
+            rates=current_rates, 
+            m_imgs=broadcast_stream
+        )
+    except Exception as route_err:
+        print(f"Interface Loading Error: {route_err}")
+        return render_template('index.html', rates="A&S Portal Ready", m_imgs=[])
 
 @app.route('/get_properties', methods=['GET'])
-def fetch_all_listings():
+def api_fetch_listings():
     """
-    Data API: Retrieves all verified property records from MongoDB.
-    Sorted by the most recent uploads first.
+    Public API: Retrieves all verified property records.
+    Ordered by latest timestamp.
     """
     try:
-        cursor = list(properties_listing.find().sort('_id', -1))
-        # Processing MongoDB BSON format into standard JSON strings
-        for doc in cursor:
-            doc['_id'] = str(doc['_id'])
-        return jsonify(cursor)
+        data_cursor = list(listings_col.find().sort('_id', -1))
+        # Processing MongoDB IDs for Frontend Compatibility
+        for document in data_cursor:
+            document['_id'] = str(document['_id'])
+        return jsonify(data_cursor)
     except Exception as e:
-        return jsonify({"status": "error", "message": "Failed to fetch cloud data", "raw": str(e)}), 500
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route('/save_property', methods=['POST'])
-def create_listing():
+def api_submit_listing():
     """
-    Management API: Creates a new property entry with full metadata.
-    Includes Social Media (YT, TikTok, FB, Insta) integration.
+    Admin Command: Commits a new property record to the database.
+    Captures Title, Price, Location, and Base64 Images.
     """
     try:
-        input_data = request.json
+        payload = request.json
         
-        # Mandatory Field Validation
-        if not input_data.get('title') or not input_data.get('img_base64'):
-            return jsonify({"status": "failed", "reason": "Missing critical fields"}), 400
+        # Security & Metadata Stamping
+        payload['submission_date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        payload['verified_by'] = "Saqib Satti"
+        payload['access_token'] = "AS-PRODUCTION-MASTER"
+        
+        # Cloud Persistence
+        insertion_op = listings_col.insert_one(payload)
+        
+        if insertion_op.inserted_id:
+            return jsonify({
+                "status": "success", 
+                "record_id": str(insertion_op.inserted_id)
+            })
+        return jsonify({"status": "database_error"}), 500
+        
+    except Exception as submission_err:
+        return jsonify({"status": "error", "message": str(submission_err)}), 500
+
+@app.route('/update_live_rates', methods=['POST'])
+def api_sync_marquee():
+    """
+    Management Control: Updates the scrolling marquee text dynamically.
+    """
+    try:
+        new_text = request.json.get('text_data')
+        if not new_text:
+            return jsonify({"status": "missing_data"}), 400
             
-        # Metadata Injection for Record Keeping
-        input_data['created_at_dt'] = datetime.now()
-        input_data['formatted_date'] = datetime.now().strftime("%d %B, %Y (%I:%M %p)")
-        input_data['listing_id'] = "AS-" + datetime.now().strftime("%Y%m%d%H%M%S")
-        input_data['verified_by'] = "Saqib Zaheer Satti"
-        
-        insert_op = properties_listing.insert_one(input_data)
-        
-        if insert_op.inserted_id:
-            return jsonify({"status": "success", "ref_id": str(insert_op.inserted_id)})
-        return jsonify({"status": "error", "msg": "Database write failed"}), 500
+        settings_col.update_one(
+            {"meta_key": "active_marquee_rates"},
+            {"$set": {"text_content": new_text}},
+            upsert=True
+        )
+        return jsonify({"status": "success", "sync_timestamp": str(datetime.now())})
     except Exception as e:
         return jsonify({"status": "error", "msg": str(e)}), 500
 
-@app.route('/upload_marquee_photo', methods=['POST'])
-def add_marquee_media():
+@app.route('/push_marquee_media', methods=['POST'])
+def api_add_broadcast_img():
     """
-    Broadcast API: Updates the marquee with a live picture of a plot or project.
-    Allows Saqib to update the scrolling strip visually.
+    Broadcast Management: Adds a visual asset to the marquee stream.
     """
     try:
-        media_payload = request.json.get('image_data')
-        if media_payload:
-            broadcast_marquee.insert_one({
-                "image_url": media_payload,
-                "upload_timestamp": datetime.now(),
-                "active_status": True
+        image_payload = request.json.get('image_stream')
+        if image_payload:
+            broadcast_col.insert_one({
+                "media_url": image_payload,
+                "upload_time": datetime.now()
             })
             return jsonify({"status": "success"})
-        return jsonify({"status": "failed", "msg": "No media stream detected"}), 400
+        return jsonify({"status": "empty_payload"}), 400
     except Exception as e:
         return jsonify({"status": "error", "msg": str(e)}), 500
 
-@app.route('/remove_listing', methods=['POST'])
-def delete_listing_permanently():
+@app.route('/purge_listing', methods=['POST'])
+def api_delete_property():
     """
-    Admin Command: Permanently deletes a property record.
-    Security: Access restricted via frontend PIN.
+    Admin Authority: Permanently deletes a property listing.
     """
     try:
-        doc_id = request.json.get('target_id')
-        if doc_id:
-            deletion = properties_listing.delete_one({"_id": ObjectId(doc_id)})
-            if deletion.deleted_count > 0:
-                return jsonify({"status": "success", "msg": "Property Purged from Cloud"})
-        return jsonify({"status": "not_found"}), 404
+        target_id = request.json.get('id_to_delete')
+        listings_col.delete_one({"_id": ObjectId(target_id)})
+        return jsonify({"status": "success", "action": "deleted"})
     except Exception as e:
-        return jsonify({"status": "error", "msg": str(e)}), 500
+        return jsonify({"status": "fail", "msg": str(e)}), 500
 
-@app.route('/update_global_config', methods=['POST'])
-def sync_app_settings():
+@app.route('/fetch_security_pin', methods=['GET'])
+def api_get_admin_pin():
     """
-    Control API: Updates Marquee Text and Security Access PIN.
+    Security Protocol: Retrieves the Master PIN for Admin authentication.
     """
-    try:
-        config_data = request.json
-        
-        # Updating Live Scrolling Text
-        if 'marquee_text' in config_data:
-            app_settings.update_one(
-                {"config_id": "active_live_marquee"},
-                {"$set": {"text_content": config_data['marquee_text']}},
-                upsert=True
-            )
-            
-        # Updating Security Authentication PIN
-        if 'new_pin' in config_data:
-            app_settings.update_one(
-                {"config_id": "admin_security_credentials"},
-                {"$set": {"pin_code": config_data['new_pin']}},
-                upsert=True
-            )
-            
-        return jsonify({"status": "success"})
-    except Exception as e:
-        return jsonify({"status": "error", "msg": str(e)}), 500
+    pin_doc = settings_col.find_one({"meta_key": "system_admin_pin"})
+    if pin_doc and 'pin_value' in pin_doc:
+        return jsonify({"pin": pin_doc['pin_value']})
+    # Safe Fallback
+    return jsonify({"pin": "as123"})
 
-@app.route('/get_auth_key', methods=['GET'])
-def retrieve_security_pin():
-    """Fetches the active PIN. Internal default fallback: as123"""
-    try:
-        security_doc = app_settings.find_one({"config_id": "admin_security_credentials"})
-        if security_doc and 'pin_code' in security_doc:
-            return jsonify({"pin": security_doc['pin_code']})
-        return jsonify({"pin": "as123"})
-    except:
-        return jsonify({"pin": "as123"})
+# --- PWA & OFFLINE INFRASTRUCTURE ---
 
-# --- PWA SERVICE WORKER HANDLERS ---
 @app.route('/sw.js')
-def handle_service_worker():
+def serve_service_worker():
+    """Serving Service Worker for PWA Offline Caching"""
     return send_from_directory(os.getcwd(), 'sw.js', mimetype='application/javascript')
 
 @app.route('/manifest.json')
-def handle_app_manifest():
+def serve_app_manifest():
+    """Serving Manifest for Home Screen Installation"""
     return send_from_directory(os.getcwd(), 'manifest.json', mimetype='application/json')
 
-# --- PRODUCTION SERVER BOOTSTRAP ---
+# --- APPLICATION EXECUTION ---
 if __name__ == '__main__':
-    # Initializing server on local gateway
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Initializing in Debug mode for Saqib's development environment
+    app.run(
+        debug=True, 
+        host='0.0.0.0', 
+        port=5000
+    )
