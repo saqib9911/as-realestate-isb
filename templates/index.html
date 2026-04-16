@@ -431,11 +431,14 @@
     </div>
 
     <header>
-        <a href="/" class="header-logo">A&S RealEstate Isb</a>
-        <div class="hamburger-icon" onclick="toggleSideNav()">
-            <i class="fa-solid fa-bars"></i>
-        </div>
-    </header>
+    <a href="#" class="header-logo" onclick="event.preventDefault(); handleSecretTap();" style="user-select: none;">
+        A&S RealEstate Isb
+    </a>
+    
+    <div class="hamburger-icon" onclick="toggleSideNav()">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</header>
 
     <nav class="side-nav-drawer" id="side-drawer">
         <a href="#" class="drawer-item" onclick="navigateTo('home')">
@@ -775,6 +778,25 @@
                 location.reload(); 
             } else {
                 alert("Error: " + result.msg);
+            }
+        }
+        // --- YE WALA HISSA MISSING HAI, ISAY ADD KAREIN ---
+        let tapCount = 0;
+        let lastTap = 0;
+
+        function handleSecretTap() {
+            const now = Date.now();
+            // Agar 1.5 second se zyada gap aaye to counter zero kar do
+            if (now - lastTap > 1500) tapCount = 0; 
+            
+            tapCount++;
+            lastTap = now;
+
+            if (tapCount === 5) {
+                tapCount = 0;
+                alert("Master Gateway Initialized...");
+                // Is se direct Admin Panel khul jaye ga
+                navigateTo('admin'); 
             }
         }
     </script>
