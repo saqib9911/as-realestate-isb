@@ -1,3 +1,9 @@
+# ==========================================================
+# PROJECT: A&S RealEstate Isb - OFFICIAL BACKEND v6.0
+# DEVELOPER: Saqib Zaheer Satti
+# DATABASE: MongoDB Cloud (Cluster0)
+# ==========================================================
+
 from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 import json
@@ -6,177 +12,128 @@ from urllib.parse import quote_plus
 from datetime import datetime
 from bson.objectid import ObjectId
 
-# --- APP INITIALIZATION ---
 app = Flask(__name__)
 
 # --- SECURE CLOUD DATABASE CONFIGURATION ---
-# Owner: Saqib Zaheer Satti
-# Project: A&S Management System Official
 DB_USER = "saqibzaheersattirocklight_db_user"
 DB_PASS = "DsUTBwyxsi5sdYf2"
 ENCODED_PASS = quote_plus(DB_PASS)
 
-# MongoDB Connection String with Cluster0 Reference
+# MongoDB Connection String (Updated for A&S RealEstate Isb)
 MONGO_URI = f"mongodb+srv://{DB_USER}:{ENCODED_PASS}@cluster0.vvzewi4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 try:
-    # Initializing MongoDB Client with specific timeouts for stability
     client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
-    db = client['as_management_final_production']
+    db = client['AS_RealEstate_ISB_Final']
     
-    # Collections Definitions
-    collection = db['properties_listing']
-    settings_col = db['system_settings']
-    admin_col = db['admin_access']
+    # Collection Definitions
+    properties_col = db['listings_v6']
+    settings_col = db['system_config']
+    broadcast_col = db['marquee_media']
     
-    # Database Ping Test to ensure cloud connectivity
     client.admin.command('ping')
     print("\n" + "="*50)
-    print(">>> A&S MANAGEMENT CLOUD: SYSTEM ONLINE <<<")
+    print("A&S REAL ESTATE CLOUD: ONLINE & SYNCED")
     print("="*50 + "\n")
 except Exception as e:
-    print(f"CRITICAL DATABASE ERROR: {str(e)}")
+    print(f"CRITICAL DB ERROR: {str(e)}")
 
-# --- SERVER SIDE LOGIC & ROUTES ---
+# --- CORE BACKEND LOGIC ---
 
 @app.route('/')
 def index():
-    """
-    Main Landing Page Route.
-    Fetches the live marquee rate list from the 'system_settings' collection.
-    If no data exists, it provides a professional default message.
-    """
+    """Main Landing Controller"""
     try:
-        rates_query = settings_col.find_one({"setting_type": "global_marquee"})
-        if rates_query and 'content' in rates_query:
-            live_rates = rates_query['content']
-        else:
-            live_rates = "A&S Management: Your Trusted Partner in Islamabad Real Estate."
-        return render_template('index.html', rates=live_rates)
-    except Exception as err:
-        print(f"Index Route Error: {err}")
-        return render_template('index.html', rates="Welcome to A&S Official Portal")
+        # Fetching Marquee Text
+        m_doc = settings_col.find_one({"type": "live_marquee"})
+        marquee_text = m_doc['text'] if m_doc else "A&S RealEstate Isb: Luxury Living in Islamabad"
+        
+        # Fetching Broadcast Images
+        m_imgs = list(broadcast_col.find().sort('_id', -1).limit(8))
+        for img in m_imgs: img['_id'] = str(img['_id'])
+        
+        return render_template('index.html', rates=marquee_text, m_imgs=m_imgs)
+    except:
+        return render_template('index.html', rates="A&S RealEstate Isb", m_imgs=[])
 
 @app.route('/get_properties', methods=['GET'])
 def get_properties():
-    """
-    Fetches all property listings stored in MongoDB.
-    Sorted by latest upload timestamp.
-    """
+    """Fetch All Property Listings"""
     try:
-        raw_data = list(collection.find().sort('_id', -1))
-        # Logic to convert BSON ObjectIDs to JSON Strings
-        processed_data = []
-        for doc in raw_data:
-            doc['_id'] = str(doc['_id'])
-            processed_data.append(doc)
-        return jsonify(processed_data)
+        listings = list(properties_col.find().sort('_id', -1))
+        for item in listings: item['_id'] = str(item['_id'])
+        return jsonify(listings)
     except Exception as e:
-        return jsonify({"status": "error", "msg": str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/save_property', methods=['POST'])
 def save_property():
-    """
-    Handles Multi-part Property Data.
-    Includes Base64 Encoded Image Strings for direct cloud storage.
-    """
+    """Save Property with Social Media Integration"""
     try:
-        form_data = request.json
+        data = request.json
+        data['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data['status'] = "Verified"
         
-        # Validation Logic for Mandatory Fields
-        required_fields = ['title', 'price', 'area', 'img']
-        for field in required_fields:
-            if not form_data.get(field):
-                return jsonify({"status": "failed", "reason": f"Field {field} is missing"}), 400
-        
-        # Meta-data Injection
-        form_data['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        form_data['status'] = "Active"
-        
-        # Database Insertion
-        insert_result = collection.insert_one(form_data)
-        
-        if insert_result.inserted_id:
-            return jsonify({"status": "success", "id": str(insert_result.inserted_id)})
-        return jsonify({"status": "error", "msg": "Insertion failed"}), 500
-        
+        res = properties_col.insert_one(data)
+        return jsonify({"status": "success", "id": str(res.inserted_id)})
     except Exception as e:
         return jsonify({"status": "error", "msg": str(e)}), 500
+
+@app.route('/upload_broadcast_img', methods=['POST'])
+def upload_broadcast():
+    """Upload Marquee Broadcast Pictures"""
+    try:
+        payload = request.json
+        broadcast_col.insert_one({
+            "image": payload.get('image'),
+            "date": datetime.now()
+        })
+        return jsonify({"status": "success"})
+    except:
+        return jsonify({"status": "error"}), 500
 
 @app.route('/delete_property', methods=['POST'])
 def delete_property():
-    """
-    Admin Command: Permanently removes a listing from the Cloud Database.
-    Requires valid MongoDB ObjectId.
-    """
+    """Admin Only: Delete Listing"""
     try:
-        target_id = request.json.get('id')
-        if not target_id:
-            return jsonify({"status": "error", "msg": "No ID provided"}), 400
-            
-        delete_op = collection.delete_one({"_id": ObjectId(target_id)})
-        
-        if delete_op.deleted_count > 0:
-            return jsonify({"status": "success", "msg": "Listing Deleted Forever"})
-        return jsonify({"status": "not_found"}), 404
-        
-    except Exception as e:
-        return jsonify({"status": "error", "msg": str(e)}), 500
+        pid = request.json.get('id')
+        properties_col.delete_one({"_id": ObjectId(pid)})
+        return jsonify({"status": "success"})
+    except:
+        return jsonify({"status": "error"}), 500
 
 @app.route('/update_settings', methods=['POST'])
 def update_settings():
-    """
-    Multi-functional Update Route.
-    Used for updating Marquee content and Admin PIN.
-    """
+    """Update Marquee and Security PIN"""
     try:
-        update_data = request.json
-        
-        # Handling Marquee Content Updates
-        if 'marquee' in update_data:
-            settings_col.update_one(
-                {"setting_type": "global_marquee"},
-                {"$set": {"content": update_data['marquee']}},
-                upsert=True
-            )
-            
-        # Handling Admin Security PIN Updates
-        if 'pin' in update_data:
-            settings_col.update_one(
-                {"setting_type": "admin_security"},
-                {"$set": {"pin_code": update_data['pin']}},
-                upsert=True
-            )
-            
+        data = request.json
+        if 'marquee' in data:
+            settings_col.update_one({"type": "live_marquee"}, {"$set": {"text": data['marquee']}}, upsert=True)
+        if 'pin' in data:
+            settings_col.update_one({"type": "security_pin"}, {"$set": {"code": data['pin']}}, upsert=True)
         return jsonify({"status": "success"})
-    except Exception as e:
-        return jsonify({"status": "error", "msg": str(e)}), 500
+    except:
+        return jsonify({"status": "error"}), 500
 
 @app.route('/get_pin', methods=['GET'])
 def get_pin():
-    """
-    Fetches the encrypted or plain PIN for session authentication.
-    Default PIN: as123
-    """
-    try:
-        pin_record = settings_col.find_one({"setting_type": "admin_security"})
-        if pin_record and 'pin_code' in pin_record:
-            return jsonify({"pin": pin_record['pin_code']})
-        return jsonify({"pin": "as123"})
-    except:
-        return jsonify({"pin": "as123"})
+    """Verify Security PIN"""
+    doc = settings_col.find_one({"type": "security_pin"})
+    return jsonify({"pin": doc['code'] if doc else "as123"})
 
-# --- PWA & STATIC ASSET ROUTES ---
-
+# --- PWA AND MANIFEST SUPPORT ---
 @app.route('/sw.js')
 def serve_sw():
-    return send_from_directory(os.getcwd(), 'sw.js')
+    return send_from_directory(os.getcwd(), 'sw.js', mimetype='application/javascript')
 
 @app.route('/manifest.json')
 def serve_manifest():
-    return send_from_directory(os.getcwd(), 'manifest.json')
+    return send_from_directory(os.getcwd(), 'manifest.json', mimetype='application/json')
 
-# --- MAIN EXECUTION ---
+@app.route('/offline')
+def offline_page():
+    return "Check your internet connection."
+
+# Server Startup
 if __name__ == '__main__':
-    # Running in production-ready mode
     app.run(debug=True, host='0.0.0.0', port=5000)
