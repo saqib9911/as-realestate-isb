@@ -191,6 +191,26 @@ def api_get_admin_pin():
     # Safe Fallback
     return jsonify({"pin": "as123"})
 
+@app.route('/change_admin_pin', methods=['POST'])
+def change_pin():
+    """
+    Master Protocol: Updates the Admin PIN in the Cloud Database.
+    """
+    try:
+        new_pin = request.json.get('new_pin')
+        if not new_pin:
+            return jsonify({"status": "error", "msg": "PIN cannot be empty"}), 400
+            
+        # Cloud Database Update
+        settings_col.update_one(
+            {"meta_key": "system_admin_pin"},
+            {"$set": {"pin_value": new_pin}},
+            upsert=True
+        )
+        return jsonify({"status": "success", "msg": "Master PIN Updated Successfully"})
+    except Exception as e:
+        return jsonify({"status": "error", "msg": str(e)}), 500
+
 # --- PWA & OFFLINE INFRASTRUCTURE ---
 
 @app.route('/sw.js')
