@@ -529,14 +529,27 @@
                     <button class="lux-master-btn" onclick="verifyAdminAccess()">Unlock Terminal</button>
                 </div>
 
-                <div id="master-terminal" class="hidden">
-                    <h2 style="color:var(--lux-gold); margin-bottom:50px; font-family:'Cinzel';">System Control</h2>
-                    
-                    <div class="form-group">
-                        <label class="label-text">Update Broadcast Text (Rates/News)</label>
-                        <textarea id="inp-marquee" class="lux-input" rows="3" placeholder="Enter scrolling text..."></textarea>
-                        <button class="lux-master-btn" style="margin-top: 15px; font-size: 1rem; padding: 18px;" onclick="saveMarqueeText()">Sync Broadcast</button>
-                    </div>
+               <div id="master-terminal" class="hidden">
+    <h2 style="color:var(--lux-gold); margin-bottom:50px; font-family:'Cinzel';">System Control</h2>
+    
+    <div class="form-group">
+        <label class="label-text">Update Broadcast Text (Rates/News)</label>
+        <textarea id="inp-marquee" class="lux-input" rows="3" placeholder="Enter scrolling text..."></textarea>
+        <button class="lux-master-btn" style="margin-top: 15px; font-size: 1rem; padding: 18px;" onclick="saveMarqueeText()">Sync Broadcast</button>
+    </div> <div style="border-top: 1px solid rgba(212,175,55,0.2); margin-top: 40px; padding-top: 30px;">
+        <label class="label-text" style="color: var(--lux-gold);">Update Master Security PIN</label>
+        <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">Yahan se aap Admin Panel ka password badal saktay hain.</p>
+        
+        <input type="text" id="new-master-pin" class="lux-input" placeholder="Naya Secret PIN likhein" 
+               style="letter-spacing: 5px; text-align: center; font-weight: bold;">
+        
+        <button class="lux-master-btn" 
+                style="margin-top: 15px; background: linear-gradient(45deg, #1a1a1a, #444); border: 1px solid var(--lux-gold);" 
+                onclick="updateSystemPin()">
+            Confirm New Master PIN
+        </button>
+    </div>
+</div>
 
                     <div style="height: 2px; background: #1c2128; margin: 50px 0;"></div>
 
@@ -764,11 +777,6 @@
                 alert("Error: " + result.msg);
             }
         }
-        // <<< PASTE KHATAM >>>
-
-    </script>
-</body>
-</html>
     </script>
 </body>
 </html>
