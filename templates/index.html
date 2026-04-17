@@ -536,12 +536,26 @@
     <h2 style="color:var(--lux-gold); margin-bottom:50px; font-family:'Cinzel';">System Control</h2>
     
     <div class="form-group">
-        <label class="label-text">Update Broadcast Text (Rates/News)</label>
-        <textarea id="inp-marquee" class="lux-input" rows="3" placeholder="Enter scrolling text..."></textarea>
-        <button class="lux-master-btn" style="margin-top: 15px; font-size: 1rem; padding: 18px;" onclick="saveMarqueeText()">Sync Broadcast</button>
-    </div> <div style="border-top: 1px solid rgba(212,175,55,0.2); margin-top: 40px; padding-top: 30px;">
-        <label class="label-text" style="color: var(--lux-gold);">Update Master Security PIN</label>
-        <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">Yahan se aap Admin Panel ka password badal saktay hain.</p>
+    <label class="label-text">Update Broadcast Text (Rates/News)</label>
+    <textarea id="inp-marquee" class="lux-input" rows="3" placeholder="Enter scrolling text..."></textarea>
+    
+    <button class="lux-master-btn" style="margin-top: 15px; font-size: 1rem; padding: 18px;" onclick="saveMarqueeText()">
+        <i class="fa fa-sync"></i> Sync Broadcast
+    </button>
+
+    <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <button class="lux-master-btn" style="flex: 1; background: #da3633; font-size: 0.9rem; padding: 15px;" onclick="clearRatesNow()">
+            <i class="fa fa-eraser"></i> Remove Rates
+        </button>
+        <button class="lux-master-btn" style="flex: 1; background: #da3633; font-size: 0.9rem; padding: 15px;" onclick="deleteAllImages()">
+            <i class="fa fa-trash-can"></i> Delete All Images
+        </button>
+    </div>
+</div> 
+
+<div style="border-top: 1px solid rgba(212,175,55,0.2); margin-top: 40px; padding-top: 30px;">
+    <label class="label-text" style="color: var(--lux-gold);">Update Master Security PIN</label>
+    <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">Yahan se aap Admin Panel ka password badal saktay hain.</p>
         
         <input type="text" id="new-master-pin" class="lux-input" placeholder="Naya Secret PIN likhein" 
                style="letter-spacing: 5px; text-align: center; font-weight: bold;">
@@ -799,6 +813,34 @@
                 navigateTo('admin'); 
             }
         }
+        // --- ADMIN TERMINAL COMMANDS (CLEANUP) ---
+
+async function clearRatesNow() {
+    // Pochtay hain ke waqai delete karna hai?
+    if(!confirm("Kya aap tamam purane rates mitaana chahte hain?")) return;
+    
+    // Default text bhej kar cloud ko saaf karte hain
+    await fetch('/update_live_rates', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ text_data: "A&S Real Estate Islamabad" }) 
+    });
+    alert("Zabardast! Rates saaf ho gaye hain.");
+    location.reload(); // Screen refresh taake asar nazar aaye
+}
+
+async function deleteAllImages() {
+    // Warning show karte hain
+    if(!confirm("DANGER: Kya aap tamam marquee images hamesha ke liye delete karna chahte hain?")) return;
+    
+    // Server ko command bhejte hain ke images uda do
+    await fetch('/clear_marquee_media', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+    });
+    alert("Tamam images cloud se delete ho gayi hain!");
+    location.reload();
+}
     </script>
 </body>
 </html>
